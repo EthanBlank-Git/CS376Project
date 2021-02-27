@@ -96,6 +96,7 @@ namespace BotnetClient
             this.ClientSize = new System.Drawing.Size(885, 500);
             this.Controls.Add(this.metroPanel1);
             this.Name = "MainPanel";
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "Client Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
