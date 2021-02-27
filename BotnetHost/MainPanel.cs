@@ -375,5 +375,9 @@ namespace BotnetHost
             }
         }
 
+        private void updateTrackBars(object sender, ScrollEventArgs e)
+        {
+
+        }
     }
 }
