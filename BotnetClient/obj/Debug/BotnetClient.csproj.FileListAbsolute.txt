@@ -1,0 +1,14 @@
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\BotnetClient.exe.config
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\BotnetClient.exe
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\BotnetClient.pdb
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\MetroFramework.Design.dll
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\MetroFramework.dll
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csprojAssemblyReference.cache
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.MainPanel.resources
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.Properties.Resources.resources
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csproj.GenerateResource.cache
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csproj.CoreCompileInputs.cache
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csproj.CopyComplete
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.exe
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.pdb

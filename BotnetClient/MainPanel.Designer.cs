@@ -47,12 +47,13 @@ namespace BotnetClient
             // 
             this.metroPanel1.Controls.Add(this.connectionLogListView);
             this.metroPanel1.Controls.Add(this.metroLabel1);
+            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel1.HorizontalScrollbarBarColor = true;
             this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(23, 63);
+            this.metroPanel1.Location = new System.Drawing.Point(20, 60);
             this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(561, 414);
+            this.metroPanel1.Size = new System.Drawing.Size(845, 420);
             this.metroPanel1.TabIndex = 0;
             this.metroPanel1.VerticalScrollbarBarColor = true;
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
@@ -64,10 +65,11 @@ namespace BotnetClient
             this.columnHeader1});
             this.connectionLogListView.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.connectionLogListView.FullRowSelect = true;
+            this.connectionLogListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.connectionLogListView.Location = new System.Drawing.Point(3, 28);
             this.connectionLogListView.Name = "connectionLogListView";
             this.connectionLogListView.OwnerDraw = true;
-            this.connectionLogListView.Size = new System.Drawing.Size(555, 383);
+            this.connectionLogListView.Size = new System.Drawing.Size(839, 383);
             this.connectionLogListView.TabIndex = 3;
             this.connectionLogListView.UseCompatibleStateImageBehavior = false;
             this.connectionLogListView.UseSelectable = true;
@@ -76,7 +78,7 @@ namespace BotnetClient
             // columnHeader1
             // 
             this.columnHeader1.Text = "Log Item";
-            this.columnHeader1.Width = 550;
+            this.columnHeader1.Width = 750;
             // 
             // metroLabel1
             // 
@@ -91,10 +93,11 @@ namespace BotnetClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 500);
+            this.ClientSize = new System.Drawing.Size(885, 500);
             this.Controls.Add(this.metroPanel1);
             this.Name = "MainPanel";
             this.Text = "Client Panel";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
