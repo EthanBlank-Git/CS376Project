@@ -4,3 +4,11 @@ Prototype Screenshots:
 
 ![](images/host1.PNG)
 ![](images/client1.PNG)
+
+TODO:
+1. Ensure DDOS functionality is working correctly
+2. Ensure multiple client connections will work simultaneously
+3. Improve Performance/Efficiency
+4. Implement User Settings functionality
+   a. XML file containing settings that are loaded at launch
+   b. Implement Style/Theme settings
