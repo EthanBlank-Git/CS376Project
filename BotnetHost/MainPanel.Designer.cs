@@ -60,10 +60,12 @@ namespace BotnetHost
             this.activityLogListView = new MetroFramework.Controls.MetroListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.metroPanel2.SuspendLayout();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
+            this.metroPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroStyleManager1
@@ -73,12 +75,9 @@ namespace BotnetHost
             // metroPanel2
             // 
             this.metroPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.metroPanel2.Controls.Add(this.metroPanel4);
             this.metroPanel2.Controls.Add(this.metroPanel3);
             this.metroPanel2.Controls.Add(this.metroLabel3);
-            this.metroPanel2.Controls.Add(this.metroLabel10);
-            this.metroPanel2.Controls.Add(this.updateStatusLabel);
-            this.metroPanel2.Controls.Add(this.serverToggle);
-            this.metroPanel2.Controls.Add(this.metroLabel5);
             this.metroPanel2.HorizontalScrollbarBarColor = true;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel2.HorizontalScrollbarSize = 10;
@@ -150,10 +149,10 @@ namespace BotnetHost
             // 
             // updateStatusLabel
             // 
-            this.updateStatusLabel.Location = new System.Drawing.Point(156, 400);
+            this.updateStatusLabel.Location = new System.Drawing.Point(157, 98);
             this.updateStatusLabel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.updateStatusLabel.Name = "updateStatusLabel";
-            this.updateStatusLabel.Size = new System.Drawing.Size(86, 23);
+            this.updateStatusLabel.Size = new System.Drawing.Size(81, 23);
             this.updateStatusLabel.TabIndex = 17;
             this.updateStatusLabel.Text = "True";
             this.updateStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -161,10 +160,10 @@ namespace BotnetHost
             // 
             // metroLabel5
             // 
-            this.metroLabel5.Location = new System.Drawing.Point(3, 400);
+            this.metroLabel5.Location = new System.Drawing.Point(-1, 98);
             this.metroLabel5.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.metroLabel5.Name = "metroLabel5";
-            this.metroLabel5.Size = new System.Drawing.Size(153, 23);
+            this.metroLabel5.Size = new System.Drawing.Size(158, 23);
             this.metroLabel5.TabIndex = 16;
             this.metroLabel5.Text = "Pending Update:";
             this.metroLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -214,7 +213,7 @@ namespace BotnetHost
             // 
             this.metroLabel10.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel10.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel10.Location = new System.Drawing.Point(3, 312);
+            this.metroLabel10.Location = new System.Drawing.Point(-1, 11);
             this.metroLabel10.Name = "metroLabel10";
             this.metroLabel10.Size = new System.Drawing.Size(239, 25);
             this.metroLabel10.TabIndex = 11;
@@ -308,7 +307,7 @@ namespace BotnetHost
             this.serverToggle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.serverToggle.Checked = true;
             this.serverToggle.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.serverToggle.Location = new System.Drawing.Point(56, 340);
+            this.serverToggle.Location = new System.Drawing.Point(52, 53);
             this.serverToggle.Name = "serverToggle";
             this.serverToggle.Size = new System.Drawing.Size(128, 28);
             this.serverToggle.TabIndex = 5;
@@ -365,7 +364,7 @@ namespace BotnetHost
             // 
             this.metroLabel3.Location = new System.Drawing.Point(3, 4);
             this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(233, 19);
+            this.metroLabel3.Size = new System.Drawing.Size(239, 19);
             this.metroLabel3.TabIndex = 4;
             this.metroLabel3.Text = "Botnet Settings";
             this.metroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -448,6 +447,24 @@ namespace BotnetHost
             this.metroLabel2.TabIndex = 4;
             this.metroLabel2.Text = "Activity Log:";
             // 
+            // metroPanel4
+            // 
+            this.metroPanel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.metroPanel4.Controls.Add(this.metroLabel10);
+            this.metroPanel4.Controls.Add(this.metroLabel5);
+            this.metroPanel4.Controls.Add(this.serverToggle);
+            this.metroPanel4.Controls.Add(this.updateStatusLabel);
+            this.metroPanel4.HorizontalScrollbarBarColor = true;
+            this.metroPanel4.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel4.HorizontalScrollbarSize = 10;
+            this.metroPanel4.Location = new System.Drawing.Point(3, 312);
+            this.metroPanel4.Name = "metroPanel4";
+            this.metroPanel4.Size = new System.Drawing.Size(239, 145);
+            this.metroPanel4.TabIndex = 18;
+            this.metroPanel4.VerticalScrollbarBarColor = true;
+            this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel4.VerticalScrollbarSize = 10;
+            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -464,6 +481,7 @@ namespace BotnetHost
             this.metroPanel3.ResumeLayout(false);
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
+            this.metroPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -500,6 +518,7 @@ namespace BotnetHost
         private MetroFramework.Controls.MetroToggle attackingToggle;
         private MetroFramework.Controls.MetroLabel metroLabel6;
         private MetroFramework.Controls.MetroButton metroButton1;
+        private MetroFramework.Controls.MetroPanel metroPanel4;
     }
 }
 
