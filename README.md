@@ -1,4 +1,4 @@
-# CS 376 - Cryptography & Network Security - Project - BOTNET
+# CS 376 - Cryptography & Network Security - Project
 
 Prototype Screenshots:
 
