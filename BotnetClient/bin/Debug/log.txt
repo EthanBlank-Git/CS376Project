@@ -1,0 +1,98 @@
+[3/1/2021 2:37:19 AM] Starting client thread...
+[3/1/2021 2:37:19 AM] Establishing connection with host server...
+[3/1/2021 2:37:19 AM] Connecting...
+[3/1/2021 2:37:19 AM] Socket connected to -> [fe80::c67:7604:c0c:8bed%11]:11111
+[3/1/2021 2:37:19 AM] ping from host recieved...
+[3/1/2021 2:37:20 AM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[UseSSL: False],[Attack: False],[Restart: False]
+[3/1/2021 2:37:21 AM] ping from host recieved...
+[3/1/2021 2:37:35 AM] Update: [IP: 192.168.1.150],[Port: 25565],[Delay: 1000],[Sockets: 25],[UseSSL: False],[Attack: True],[Restart: False]
+[3/1/2021 2:37:35 AM] Starting attack...
+[3/1/2021 2:37:40 AM] Initiating socket (192.168.1.44:49353)
+[3/1/2021 2:37:40 AM] Sending keep alive data... (192.168.1.44:49353)
+[3/1/2021 2:37:42 AM] Something went wrong, recreating socket:
+System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   at BotnetClient.MainPanel.<>c__DisplayClass16_2.<InitClient>b__6() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 369
+   at BotnetClient.MainPanel.SocketSafe(TcpClient c, Action a) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 384
+[3/1/2021 2:37:45 AM] Initiating socket (192.168.1.44:49354)
+[3/1/2021 2:37:45 AM] Sending keep alive data... (192.168.1.44:49354)
+[3/1/2021 2:37:47 AM] Something went wrong, recreating socket:
+System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   at BotnetClient.MainPanel.<>c__DisplayClass16_2.<InitClient>b__6() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 369
+   at BotnetClient.MainPanel.SocketSafe(TcpClient c, Action a) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 384
+[3/1/2021 2:37:47 AM] Error connecting:
+System.InvalidOperationException: Once the socket has been disconnected, you can only reconnect again asynchronously, and only to a different EndPoint.  BeginConnect must be called on a thread that won't exit until the operation has been completed.
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPEndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPAddress address, Int32 port)
+   at BotnetClient.MainPanel.InitClient(TcpClient c) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
+[3/1/2021 2:37:49 AM] Initiating socket (192.168.1.44:49355)
+[3/1/2021 2:37:49 AM] Sending keep alive data... (192.168.1.44:49355)
+[3/1/2021 2:37:51 AM] Error connecting:
+System.InvalidOperationException: Once the socket has been disconnected, you can only reconnect again asynchronously, and only to a different EndPoint.  BeginConnect must be called on a thread that won't exit until the operation has been completed.
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPEndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPAddress address, Int32 port)
+   at BotnetClient.MainPanel.InitClient(TcpClient c) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
+[3/1/2021 2:37:51 AM] Something went wrong, recreating socket:
+System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   at BotnetClient.MainPanel.<>c__DisplayClass16_2.<InitClient>b__6() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 369
+   at BotnetClient.MainPanel.SocketSafe(TcpClient c, Action a) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 384
+[3/1/2021 2:37:54 AM] Initiating socket (192.168.1.44:49356)
+[3/1/2021 2:37:54 AM] Sending keep alive data... (192.168.1.44:49356)
+[3/1/2021 2:37:56 AM] Something went wrong, recreating socket:
+System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   at BotnetClient.MainPanel.<>c__DisplayClass16_2.<InitClient>b__6() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 369
+   at BotnetClient.MainPanel.SocketSafe(TcpClient c, Action a) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 384
+[3/1/2021 2:37:56 AM] System.IO.IOException: The process cannot access the file 'C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\log.txt' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
+   at System.IO.File.InternalAppendAllText(String path, String contents, Encoding encoding)
+   at BotnetClient.MainPanel.log(String logMessage) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 276
+[3/1/2021 2:37:58 AM] Initiating socket (192.168.1.44:49357)
+[3/1/2021 2:37:58 AM] Sending keep alive data... (192.168.1.44:49357)
+[3/1/2021 2:38:00 AM] Error connecting:
+System.InvalidOperationException: Once the socket has been disconnected, you can only reconnect again asynchronously, and only to a different EndPoint.  BeginConnect must be called on a thread that won't exit until the operation has been completed.
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPEndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPAddress address, Int32 port)
+   at BotnetClient.MainPanel.InitClient(TcpClient c) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
+[3/1/2021 2:38:00 AM] System.IO.IOException: The process cannot access the file 'C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\bin\Debug\log.txt' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
+   at System.IO.File.InternalAppendAllText(String path, String contents, Encoding encoding)
+   at BotnetClient.MainPanel.log(String logMessage) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 276
+[3/1/2021 2:38:03 AM] Initiating socket (192.168.1.44:49359)
+[3/1/2021 2:38:03 AM] Sending keep alive data... (192.168.1.44:49359)
+[3/1/2021 2:38:05 AM] Something went wrong, recreating socket:
+System.IO.IOException: Unable to write data to the transport connection: An established connection was aborted by the software in your host machine. ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Write(Byte[] buffer, Int32 offset, Int32 size)
+   at BotnetClient.MainPanel.<>c__DisplayClass16_2.<InitClient>b__6() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 369
+   at BotnetClient.MainPanel.SocketSafe(TcpClient c, Action a) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 384
+[3/1/2021 2:38:05 AM] Error connecting:
+System.InvalidOperationException: Once the socket has been disconnected, you can only reconnect again asynchronously, and only to a different EndPoint.  BeginConnect must be called on a thread that won't exit until the operation has been completed.
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPEndPoint remoteEP)
+   at System.Net.Sockets.TcpClient.Connect(IPAddress address, Int32 port)
+   at BotnetClient.MainPanel.InitClient(TcpClient c) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
