@@ -20,6 +20,7 @@
 4. Implement User Settings functionality (xml file that saves/loads on launch/exit)
 5. Implement data transfer encryption between server & client
 6. Implement functionality for different types of attacks (for expanded useability)
+7. Restructure code for both client & server to be more organized
 
 ### Important Notes
 This program is purely for educational purposes. 
