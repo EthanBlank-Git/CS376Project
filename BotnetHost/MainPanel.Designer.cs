@@ -65,11 +65,14 @@ namespace BotnetHost
             this.activityLogListView = new MetroFramework.Controls.MetroListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.logContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.viewLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.metroPanel2.SuspendLayout();
             this.metroPanel4.SuspendLayout();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
+            this.logContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroStyleManager1
@@ -499,6 +502,7 @@ namespace BotnetHost
             this.activityLogListView.UseCompatibleStateImageBehavior = false;
             this.activityLogListView.UseSelectable = true;
             this.activityLogListView.View = System.Windows.Forms.View.Details;
+            this.activityLogListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.activityLogListView_MouseDown);
             // 
             // columnHeader2
             // 
@@ -513,6 +517,20 @@ namespace BotnetHost
             this.metroLabel2.Size = new System.Drawing.Size(79, 19);
             this.metroLabel2.TabIndex = 4;
             this.metroLabel2.Text = "Activity Log:";
+            // 
+            // logContextMenu
+            // 
+            this.logContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewLogMenuItem});
+            this.logContextMenu.Name = "clientContextMenu";
+            this.logContextMenu.Size = new System.Drawing.Size(171, 26);
+            // 
+            // viewLogMenuItem
+            // 
+            this.viewLogMenuItem.Name = "viewLogMenuItem";
+            this.viewLogMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.viewLogMenuItem.Text = "View Full Message";
+            this.viewLogMenuItem.Click += new System.EventHandler(this.viewLogMenuItem_Click);
             // 
             // MainPanel
             // 
@@ -532,6 +550,7 @@ namespace BotnetHost
             this.metroPanel3.ResumeLayout(false);
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
+            this.logContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -573,6 +592,8 @@ namespace BotnetHost
         private MetroFramework.Controls.MetroLabel serverIPV4Label;
         private MetroFramework.Controls.MetroLabel serverIPLabel;
         private MetroFramework.Controls.MetroLabel serverPortLabel;
+        private MetroFramework.Controls.MetroContextMenu logContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem viewLogMenuItem;
     }
 }
 

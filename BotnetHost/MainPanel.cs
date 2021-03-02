@@ -493,5 +493,34 @@ namespace BotnetHost
             }
             return output;
         }
+
+        /// <summary>
+        /// Click log context menu item resulting in message box displaying full message (usefull if errors get cutoff)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void viewLogMenuItem_Click(object sender, EventArgs e)
+        {
+            if (activityLogListView.SelectedItems[0] != null)
+            {
+                MessageBox.Show(activityLogListView.SelectedItems[0].Text, "Log Message");
+            }
+        }
+        /// <summary>
+        /// MouseDown event for log listview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void activityLogListView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = activityLogListView.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    logContextMenu.Show(Cursor.Position);
+                }
+            }
+        }
     }
 }
