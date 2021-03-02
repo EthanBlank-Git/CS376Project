@@ -136,6 +136,14 @@ namespace BotnetHost
                 } catch (Exception er)
                 {
                     log("Connection with " + clientConnection.clientName + " has been lost...");
+                    // Kill client
+                    try
+                    {
+                        clientConnections.Remove(clientConnection);
+                    }
+                    catch (Exception e) { }
+                    clientConnection.killClient();
+                    updateClientPanel();
                     runThread = false;
                 }
             }
