@@ -11,10 +11,9 @@ namespace BotnetHost
     class ClientConnection
     {
         // Client Variables
-        public Boolean isAlive = true;
         public Thread clientThread;
         public Socket clientSocket;
-        public Guid guid = new Guid();
+        public string uid = "";
         public string clientName = "";
         // Data Variables
         public string hostOrIP = "localhost";
@@ -85,7 +84,6 @@ namespace BotnetHost
         // Shutdown & Close Socket and Abort thread
         public void killClient()
         {
-            isAlive = false;
             try
             {
                 clientSocket.Shutdown(SocketShutdown.Both);

