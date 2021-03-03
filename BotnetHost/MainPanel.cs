@@ -28,6 +28,7 @@ namespace BotnetHost
         Boolean runServer = false;
         string previousLogMessage = "";
         Boolean restartClients = false;
+        Boolean hasUpdate = false;
 
         /// <summary>
         /// MainPanel Function, this is the constuctor for the window
@@ -72,9 +73,8 @@ namespace BotnetHost
             
             // Infinite loop while client is running
             while (runThread)
-            {
-                
-                Boolean hasUpdate = false;
+            {   
+                hasUpdate = false;
                 updateStatusLabel.Invoke((MethodInvoker)delegate {
                     // Running on the UI thread
                     hasUpdate = Boolean.Parse(updateStatusLabel.Text);
@@ -294,7 +294,7 @@ namespace BotnetHost
                 try
                 {
                     ListViewItem clientItem = new ListViewItem();
-                    clientItem.Text = item.clientSocket.RemoteEndPoint.ToString();
+                    clientItem.Text = item.clientName;
                     // Add tile to main panel
                     clientListView.Invoke((MethodInvoker)delegate {
                         // Running on the UI thread
@@ -321,7 +321,10 @@ namespace BotnetHost
                 clientConnection.sockets = socketsTrackBar.Value;
                 clientConnection.useSSL = useSSLToggle.Checked;
                 clientConnection.attack = attackingToggle.Checked;
-                clientConnection.restart = restartClients;
+                if (!clientConnection.restart)
+                {
+                    clientConnection.restart = restartClients;
+                }
             }
             updateStatusLabel.Text = "True";
         }
@@ -506,6 +509,7 @@ namespace BotnetHost
                 MessageBox.Show(activityLogListView.SelectedItems[0].Text, "Log Message");
             }
         }
+
         /// <summary>
         /// MouseDown event for log listview
         /// </summary>
@@ -519,6 +523,68 @@ namespace BotnetHost
                 if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
                 {
                     logContextMenu.Show(Cursor.Position);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disconnect the selected client from the Host-Server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (clientListView.SelectedItems[0] != null)
+            {
+                string selectedClientName = clientListView.SelectedItems[0].Text;
+
+                foreach (ClientConnection connection in clientConnections)
+                {
+                    if (connection.clientName == selectedClientName)
+                    {
+                        connection.killClient();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// MouseDown catcher for client list view (used for cotext menu)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clientListView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = clientListView.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    clientContextMenu.Show(Cursor.Position);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Restart the selected client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (clientListView.SelectedItems[0] != null)
+            {
+                string selectedClientName = clientListView.SelectedItems[0].Text;
+
+                foreach (ClientConnection connection in clientConnections)
+                {
+                    if (connection.clientName == selectedClientName)
+                    {
+                        connection.restart = true;
+                        hasUpdate = true;
+                        settingsChanged(sender, e);
+                        updateClientPanel();
+                    }
                 }
             }
         }

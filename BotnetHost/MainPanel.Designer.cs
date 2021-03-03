@@ -67,12 +67,16 @@ namespace BotnetHost
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.logContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.viewLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.metroPanel2.SuspendLayout();
             this.metroPanel4.SuspendLayout();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
             this.logContextMenu.SuspendLayout();
+            this.clientContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroStyleManager1
@@ -472,6 +476,7 @@ namespace BotnetHost
             this.clientListView.UseCompatibleStateImageBehavior = false;
             this.clientListView.UseSelectable = true;
             this.clientListView.View = System.Windows.Forms.View.Details;
+            this.clientListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.clientListView_MouseDown);
             // 
             // columnHeader1
             // 
@@ -532,6 +537,28 @@ namespace BotnetHost
             this.viewLogMenuItem.Text = "View Full Message";
             this.viewLogMenuItem.Click += new System.EventHandler(this.viewLogMenuItem_Click);
             // 
+            // clientContextMenu
+            // 
+            this.clientContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.disconnectToolStripMenuItem,
+            this.restartToolStripMenuItem});
+            this.clientContextMenu.Name = "clientContextMenu";
+            this.clientContextMenu.Size = new System.Drawing.Size(181, 70);
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.disconnectToolStripMenuItem.Text = "Disconnect";
+            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
+            // 
+            // restartToolStripMenuItem
+            // 
+            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restartToolStripMenuItem.Text = "Restart";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
+            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,6 +578,7 @@ namespace BotnetHost
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
             this.logContextMenu.ResumeLayout(false);
+            this.clientContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -594,6 +622,9 @@ namespace BotnetHost
         private MetroFramework.Controls.MetroLabel serverPortLabel;
         private MetroFramework.Controls.MetroContextMenu logContextMenu;
         private System.Windows.Forms.ToolStripMenuItem viewLogMenuItem;
+        private MetroFramework.Controls.MetroContextMenu clientContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
     }
 }
 
