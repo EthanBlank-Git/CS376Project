@@ -11,3 +11,4 @@ C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\B
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csproj.CopyComplete
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.exe
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.pdb
+C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\obj\Debug\BotnetClient.csprojAssemblyReference.cache

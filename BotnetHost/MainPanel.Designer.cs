@@ -350,7 +350,7 @@ namespace BotnetHost
             this.delayTrackBar.BackColor = System.Drawing.Color.Transparent;
             this.delayTrackBar.Location = new System.Drawing.Point(97, 58);
             this.delayTrackBar.Maximum = 30000;
-            this.delayTrackBar.Minimum = 1000;
+            this.delayTrackBar.Minimum = 250;
             this.delayTrackBar.Name = "delayTrackBar";
             this.delayTrackBar.Size = new System.Drawing.Size(86, 23);
             this.delayTrackBar.TabIndex = 7;
@@ -543,19 +543,19 @@ namespace BotnetHost
             this.disconnectToolStripMenuItem,
             this.restartToolStripMenuItem});
             this.clientContextMenu.Name = "clientContextMenu";
-            this.clientContextMenu.Size = new System.Drawing.Size(181, 70);
+            this.clientContextMenu.Size = new System.Drawing.Size(134, 48);
             // 
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 

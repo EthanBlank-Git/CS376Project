@@ -341,3 +341,65 @@ System.Net.Sockets.SocketException (0x80004005): No such host is known
 [3/3/2021 3:21:21 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[UseSSL: False],[Attack: False],[Restart: False]
 [3/3/2021 3:21:27 PM] Disconnecting...
 [3/3/2021 3:21:27 PM] Disconnected.
+[3/3/2021 4:07:50 PM] Starting client thread...
+[3/3/2021 4:07:50 PM] Connecting to Host-Server...
+[3/3/2021 4:07:51 PM] Connected to 10.35.24.225:11111
+[3/3/2021 4:07:52 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[UseSSL: False],[Attack: False],[Restart: False]
+[3/3/2021 4:08:01 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[UseSSL: False],[Attack: True],[Restart: False]
+[3/3/2021 4:08:01 PM] Starting attack...
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Creating Threads...
+[3/3/2021 4:08:01 PM] Error creating attack thread System.Threading.ThreadStateException: Thread is running or terminated; it cannot restart.
+   at System.Threading.Thread.StartupSetApartmentStateInternal()
+   at System.Threading.Thread.Start(StackCrawlMark& stackMark)
+   at System.Threading.Thread.Start()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 186
+[3/3/2021 4:08:01 PM] Starting Threads...
+[3/3/2021 4:09:02 PM] Starting client thread...
+[3/3/2021 4:09:02 PM] Connecting to Host-Server...
+[3/3/2021 4:09:02 PM] Connected to 10.35.24.225:11111
+[3/3/2021 4:09:09 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[UseSSL: False],[Attack: True],[Restart: False]
+[3/3/2021 4:09:09 PM] Starting attack...
+[3/3/2021 4:09:09 PM] Creating Threads...
+[3/3/2021 4:09:09 PM] Starting Threads...
