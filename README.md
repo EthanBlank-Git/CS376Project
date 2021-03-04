@@ -1,6 +1,6 @@
 # CS 376 - Cryptography & Network Security - Project
 
-<img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"> <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.5-yellow">
+<img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"> <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.6-yellow">
 
 ## Prototype Screenshots
 
@@ -15,12 +15,10 @@
 5. Individual Client Handeling - Context Menus are used to apply settings/commands to individual clients
 
 ### ToDo
-1. Ensure DDOS functionality is working correctly (possibly change attack implementation)
-2. Ensure multiple client connections will work simultaneously
-4. Implement User Settings functionality (xml file that saves/loads on launch/exit)
-5. Implement data transfer encryption between server & client
-6. Implement functionality for different types of attacks (for expanded useability)
-7. Improve error handling
+1. Ensure DDOS functionality is working correctly
+2. Improve error handling
+3. Implement data encryption between server & client
+4. Implement functionality for different types of attacks (for expanded useability)
 
 ### Important Notes
 This program is purely for educational purposes. 

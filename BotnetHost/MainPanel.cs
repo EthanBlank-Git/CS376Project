@@ -118,10 +118,6 @@ namespace BotnetHost
                         clientConnection.clientSocket.Send(message);
                         clientConnection.restart = false;
                         clientConnection.hasUpdate = false;
-                        updateStatusLabel.Invoke((MethodInvoker)delegate {
-                            // Running on the UI thread
-                            updateStatusLabel.Text = "False";
-                        });
                     } else
                     {
                         // Ping clients (check that they are still connected)
@@ -338,7 +334,6 @@ namespace BotnetHost
                 }
                 clientConnection.hasUpdate = true;
             }
-            updateStatusLabel.Text = "True";
         }
 
         /// <summary>
