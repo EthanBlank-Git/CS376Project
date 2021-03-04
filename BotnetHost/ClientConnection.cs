@@ -20,7 +20,7 @@ namespace BotnetHost
         public int port = 12345;
         public int delay = 15000;
         public int sockets = 8;
-        public Boolean useSSL = false;
+        public string type = "TCP";
         public Boolean attack = false;
         public Boolean restart = false;
 
@@ -40,7 +40,7 @@ namespace BotnetHost
             updates[1] = "Port: " + port + "";
             updates[2] = "Delay: " + delay + "";
             updates[3] = "Sockets: " + sockets + "";
-            updates[4] = "UseSSL: " + useSSL.ToString() + "";
+            updates[4] = "Type: " + type + "";
             updates[5] = "Attack: " + attack.ToString() + "";
             updates[6] = "Restart: " + restart.ToString() + "";
 
