@@ -76,7 +76,6 @@ namespace BotnetClient
             this.logListView.UseCompatibleStateImageBehavior = false;
             this.logListView.UseCustomBackColor = true;
             this.logListView.UseSelectable = true;
-            this.logListView.UseStyleColors = true;
             this.logListView.View = System.Windows.Forms.View.Details;
             this.logListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.connectionLogListView_MouseDown);
             // 

