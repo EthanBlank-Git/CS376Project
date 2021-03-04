@@ -1,6 +1,6 @@
 # CS 376 - Cryptography & Network Security - Project
 
-<img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"> <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.4-yellow">
+<img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"> <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.5-yellow">
 
 ## Prototype Screenshots
 
@@ -20,10 +20,9 @@
 4. Implement User Settings functionality (xml file that saves/loads on launch/exit)
 5. Implement data transfer encryption between server & client
 6. Implement functionality for different types of attacks (for expanded useability)
-7. Restructure code for both client & server to be more organized
-8. Improve error handling
+7. Improve error handling
 
 ### Important Notes
 This program is purely for educational purposes. 
 Nothing created here is designed to be used maliciously. 
-We am not responsible for what you do with this program/source code.
+We are not responsible for what you do with this program/source code.
