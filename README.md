@@ -16,7 +16,7 @@
 ### ToDo
 1. Test different attack types to make sure they are effective (All attack types should be tested & confirmed working)
 2. Improve error handling (fix ugly error messages and prevent crashes)
-3. Implement data encryption between server & client (This will probably involve re-writing the server and client sockets to use SSLStreams and TCP clients)
+3. Implement data encryption between server & client (This will probably involve re-writing the server and client sockets to use SSLStreams and TCPClients)
 
 ### Important Notes
 This program is purely for educational purposes. 
