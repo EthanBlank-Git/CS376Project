@@ -3,13 +3,6 @@
 <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.7-blue">
 
 ## Prototype Screenshots
-
-<div style="text-align:center">
-<img src="https://github.com/EBTheKidd/CS376Project/blob/main/images/host1.PNG?raw=true" />
-<img src="https://github.com/EBTheKidd/CS376Project/blob/main/images/client1.PNG?raw=true" />
-</div>
-
-
 ![](images/host1.PNG?style=centerme)
 ![](images/client1.PNG?style=centerme)
 
