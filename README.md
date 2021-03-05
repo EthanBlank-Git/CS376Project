@@ -1,11 +1,13 @@
 # CS 376 - Cryptography & Network Security - Project
 
-<img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"> <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.7-blue">
+<img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.7-blue">
 
 ## Prototype Screenshots
 
+<div style="text-align:center">
 ![](images/host1.PNG)
 ![](images/client1.PNG)
+</div>
 
 ### Finished Stuff
 1. Sockets - Data is successfully transfered between Server & Client(s). (this has been tested and confirmed between two computers on the same network)
