@@ -6266,3 +6266,59 @@ System.InvalidOperationException: Once the socket has been disconnected, you can
 [3/4/2021 9:12:19 PM] Disconnected.
 [3/4/2021 9:12:19 PM] Disconnecting...
 [3/4/2021 9:12:19 PM] Disconnected.
+[3/4/2021 11:58:18 PM] Starting client thread...
+[3/4/2021 11:58:19 PM] Connecting to Host-Server...
+[3/4/2021 11:58:19 PM] Connected to 192.168.1.44:11111
+[3/4/2021 11:58:19 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[Packet Size: 32],[Type: TCP],[Attack: False],[Restart: False]
+[3/4/2021 11:58:24 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[Packet Size: 64],[Type: TCP],[Attack: False],[Restart: True]
+[3/4/2021 11:58:24 PM] Error parsing update... System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.MainPanel_FormClosing(Object sender, FormClosingEventArgs e) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
+   at System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   at System.Windows.Forms.Form.RaiseFormClosingOnAppExit()
+   at System.Windows.Forms.Application.ExitInternal()
+   at System.Windows.Forms.Application.Restart()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 201
+[3/4/2021 11:58:24 PM] Unexpected exception : System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 217
+[3/4/2021 11:58:24 PM] System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 232
+[3/4/2021 11:58:24 PM] Restarting...
+[3/4/2021 11:58:24 PM] Starting client thread...
+[3/4/2021 11:58:24 PM] Connecting to Host-Server...
+[3/4/2021 11:58:24 PM] Connected to 192.168.1.44:11111
+[3/4/2021 11:58:25 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[Packet Size: 32],[Type: TCP],[Attack: False],[Restart: False]
+[3/4/2021 11:58:32 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[Packet Size: 64],[Type: TCP],[Attack: False],[Restart: True]
+[3/4/2021 11:58:32 PM] Error parsing update... System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.MainPanel_FormClosing(Object sender, FormClosingEventArgs e) in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 321
+   at System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   at System.Windows.Forms.Form.RaiseFormClosingOnAppExit()
+   at System.Windows.Forms.Application.ExitInternal()
+   at System.Windows.Forms.Application.Restart()
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 201
+[3/4/2021 11:58:32 PM] Unexpected exception : System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 217
+[3/4/2021 11:58:32 PM] System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 232
+[3/4/2021 11:58:32 PM] Restarting...
+[3/4/2021 11:58:32 PM] Starting client thread...
+[3/4/2021 11:58:32 PM] Connecting to Host-Server...
+[3/4/2021 11:58:32 PM] Connected to 192.168.1.44:11111
+[3/4/2021 11:58:33 PM] Update: [IP: localhost],[Port: 12345],[Delay: 15000],[Sockets: 8],[Packet Size: 32],[Type: TCP],[Attack: False],[Restart: False]
+[3/4/2021 11:58:45 PM] Unexpected exception : System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 217
+[3/4/2021 11:58:46 PM] System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 232
+[3/5/2021 12:03:21 AM] Starting client thread...
+[3/5/2021 12:03:21 AM] Connecting to Host-Server...
+[3/5/2021 12:03:23 AM] SocketException : System.Net.Sockets.SocketException (0x80004005): No connection could be made because the target machine actively refused it 192.168.1.44:11111
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 114
+[3/5/2021 12:03:23 AM] Connecting to Host-Server...
+[3/5/2021 12:03:24 AM] Unexpected exception : System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Net.UnsafeNclNativeMethods.OSSOCK.WSAConnect(IntPtr socketHandle, Byte[] socketAddress, Int32 socketAddressSize, IntPtr inBuffer, IntPtr outBuffer, IntPtr sQOS, IntPtr gQOS)
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 114
+[3/5/2021 12:03:25 AM] System.Threading.ThreadAbortException: Thread was being aborted.
+   at BotnetClient.MainPanel.clientSocketThread() in C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetClient\MainPanel.cs:line 232

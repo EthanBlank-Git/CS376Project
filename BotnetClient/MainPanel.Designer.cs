@@ -61,15 +61,14 @@ namespace BotnetClient
             this.logListView.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.logListView.FullRowSelect = true;
             this.logListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.logListView.Location = new System.Drawing.Point(20, 60);
+            this.logListView.Location = new System.Drawing.Point(20, 30);
             this.logListView.Name = "logListView";
             this.logListView.OwnerDraw = true;
-            this.logListView.Size = new System.Drawing.Size(860, 420);
+            this.logListView.Size = new System.Drawing.Size(690, 301);
             this.logListView.Style = MetroFramework.MetroColorStyle.Blue;
             this.logListView.TabIndex = 3;
             this.logListView.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.logListView.UseCompatibleStateImageBehavior = false;
-            this.logListView.UseCustomBackColor = true;
             this.logListView.UseSelectable = true;
             this.logListView.View = System.Windows.Forms.View.Details;
             this.logListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.connectionLogListView_MouseDown);
@@ -77,15 +76,19 @@ namespace BotnetClient
             // columnHeader1
             // 
             this.columnHeader1.Text = "Log Item";
-            this.columnHeader1.Width = 850;
+            this.columnHeader1.Width = 680;
             // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 500);
+            this.ClientSize = new System.Drawing.Size(730, 351);
             this.Controls.Add(this.logListView);
+            this.DisplayHeader = false;
+            this.MaximizeBox = false;
             this.Name = "MainPanel";
+            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
+            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "Client Panel";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
