@@ -4,10 +4,8 @@
 
 ## Prototype Screenshots
 
-<div style="text-align:center">
-![](images/host1.PNG)
-![](images/client1.PNG)
-</div>
+![](images/host1.PNG?style=centerme)
+![](images/client1.PNG?style=centerme)
 
 ### Finished Stuff
 1. Sockets - Data is successfully transfered between Server & Client(s). (this has been tested and confirmed between two computers on the same network)
