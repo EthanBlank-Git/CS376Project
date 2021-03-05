@@ -4,6 +4,12 @@
 
 ## Prototype Screenshots
 
+<div style="text-align:center">
+<img src="https://github.com/EBTheKidd/CS376Project/blob/main/images/host1.PNG?raw=true" />
+<img src="https://github.com/EBTheKidd/CS376Project/blob/main/images/client1.PNG?raw=true" />
+</div>
+
+
 ![](images/host1.PNG?style=centerme)
 ![](images/client1.PNG?style=centerme)
 
