@@ -113,8 +113,10 @@ namespace BotnetHost
                     // Send update message to client (if update is present)
                     if (clientConnection.hasUpdate)
                     {
+                        // Build update message for client connection
                         log("Sending Client Update: " + clientConnection.buildUpdate(new string[0]));
                         byte[] message = Encoding.ASCII.GetBytes(clientConnection.buildUpdate(new string[0]));
+                        // Send update message and reset necessary variables
                         clientConnection.clientSocket.Send(message);
                         clientConnection.restart = false;
                         clientConnection.hasUpdate = false;

@@ -25,7 +25,7 @@ namespace BotnetClient
         List<AttackConnection> attackConnections = new List<AttackConnection>();
         // Host Server Settings
         //string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
-        string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan)
+        string serverIPV4 = "192.168.1.44"; // IPV4 of host server (for lan) // home: 192.168.1.44, school: 10.35.50.90
         Int32 serverPort = 11111; // Server Port
         // Attack Settings
         static string HostOrIP = "localhost"; // Victim's IP or hostname
@@ -75,7 +75,6 @@ namespace BotnetClient
         {
             InitializeComponent();
             log("Starting client thread...");
-            logListView.Columns[0].Width = logListView.Width;
             clientThread = new Thread(() => clientSocketThread());
             clientThread.Start();
         }
@@ -285,7 +284,6 @@ namespace BotnetClient
                     logListView.Invoke((MethodInvoker)delegate {
                         // Running on the UI thread
                         logListView.Items.Add(newItem);
-                        logListView.Columns[0].Width = logListView.Width - 5;
                         logListView.EnsureVisible(logListView.Items.Count - 1);
                     });
                     previousLogMessage = raw;
@@ -457,6 +455,16 @@ namespace BotnetClient
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[Rand.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// Fix logListView width after form resize and limit minimal window size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainPanel_Resize(object sender, EventArgs e)
+        {
+            logListView.Columns[0].Width = logListView.Width - 20;
         }
     }
 }

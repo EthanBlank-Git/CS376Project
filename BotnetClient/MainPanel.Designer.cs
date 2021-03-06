@@ -76,7 +76,7 @@ namespace BotnetClient
             // columnHeader1
             // 
             this.columnHeader1.Text = "Log Item";
-            this.columnHeader1.Width = 680;
+            this.columnHeader1.Width = 670;
             // 
             // MainPanel
             // 
@@ -86,13 +86,14 @@ namespace BotnetClient
             this.Controls.Add(this.logListView);
             this.DisplayHeader = false;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(250, 250);
             this.Name = "MainPanel";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
-            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.Text = "Client Panel";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
+            this.Resize += new System.EventHandler(this.MainPanel_Resize);
             this.logContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
