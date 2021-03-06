@@ -1,6 +1,6 @@
 # CS 376 - Cryptography & Network Security - Project
 
-<img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.7-blue">
+<img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.8-blue">
 
 ## Prototype Screenshots
 ![](images/host1.PNG)
@@ -17,7 +17,6 @@
 1. Test different attack types to make sure they are effective (All attack types should be tested & confirmed working)
 2. Improve error handling (fix ugly error messages and prevent crashes)
 3. Implement data encryption between server & client (This will probably involve re-writing the server and client sockets to use SSLStreams and TCPClients)
-4. Implement Hide/Unhide feature for clients (Will allow clients to be forcibly hidden/shown with commands from the server)
 
 ### Important Notes
 This program is purely for educational purposes. 
