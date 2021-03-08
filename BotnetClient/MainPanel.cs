@@ -145,6 +145,7 @@ namespace BotnetClient
                                     }
                                     // Print split updates into string array
                                     log("Update recieved...");
+                                    //log(message);
                                     string[] updates = message.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
                                     foreach (string item in updates)
                                     {
