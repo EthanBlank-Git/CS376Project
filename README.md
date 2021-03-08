@@ -3,7 +3,9 @@
 <img src="https://img.shields.io/badge/platform-windows-success.svg"> <img src="https://img.shields.io/badge/version-0.5.8-blue">
 
 ## Prototype Screenshots
+Host
 ![](images/host1.PNG)
+Client
 ![](images/client1.PNG)
 
 ### Finished Stuff
