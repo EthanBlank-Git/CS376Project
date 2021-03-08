@@ -6,6 +6,7 @@
 Host
 ![](images/host1.PNG)
 Client
+
 ![](images/client1.PNG)
 
 ### Finished Stuff
