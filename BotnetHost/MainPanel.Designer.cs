@@ -37,6 +37,7 @@ namespace BotnetHost
             this.serverToggle = new MetroFramework.Controls.MetroToggle();
             this.metroLabel10 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
+            this.hideClientsBtn = new MetroFramework.Controls.MetroButton();
             this.packetSizeLabel = new MetroFramework.Controls.MetroLabel();
             this.metroLabel13 = new MetroFramework.Controls.MetroLabel();
             this.packetSizeTrackBar = new MetroFramework.Controls.MetroTrackBar();
@@ -67,9 +68,8 @@ namespace BotnetHost
             this.logContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.viewLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clientContextMenu = new MetroFramework.Controls.MetroContextMenu(this.components);
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideClientsBtn = new MetroFramework.Controls.MetroButton();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
@@ -179,6 +179,17 @@ namespace BotnetHost
             this.metroPanel3.VerticalScrollbarBarColor = true;
             this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel3.VerticalScrollbarSize = 10;
+            // 
+            // hideClientsBtn
+            // 
+            this.hideClientsBtn.Location = new System.Drawing.Point(151, 374);
+            this.hideClientsBtn.Name = "hideClientsBtn";
+            this.hideClientsBtn.Size = new System.Drawing.Size(130, 23);
+            this.hideClientsBtn.TabIndex = 27;
+            this.hideClientsBtn.Text = "Hide Clients";
+            this.hideClientsBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.hideClientsBtn.UseSelectable = true;
+            this.hideClientsBtn.Click += new System.EventHandler(this.hideClientsBtn_Click);
             // 
             // packetSizeLabel
             // 
@@ -586,42 +597,31 @@ namespace BotnetHost
             // clientContextMenu
             // 
             this.clientContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.disconnectToolStripMenuItem,
+            this.killToolStripMenuItem,
             this.restartToolStripMenuItem,
             this.hideToolStripMenuItem});
             this.clientContextMenu.Name = "clientContextMenu";
-            this.clientContextMenu.Size = new System.Drawing.Size(172, 70);
+            this.clientContextMenu.Size = new System.Drawing.Size(134, 70);
             // 
-            // disconnectToolStripMenuItem
+            // killToolStripMenuItem
             // 
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.disconnectToolStripMenuItem.Text = "Disconnect";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
+            this.killToolStripMenuItem.Name = "killToolStripMenuItem";
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.killToolStripMenuItem.Text = "Kill";
+            this.killToolStripMenuItem.Click += new System.EventHandler(this.killToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
-            // 
-            // hideClientsBtn
-            // 
-            this.hideClientsBtn.Location = new System.Drawing.Point(151, 374);
-            this.hideClientsBtn.Name = "hideClientsBtn";
-            this.hideClientsBtn.Size = new System.Drawing.Size(130, 23);
-            this.hideClientsBtn.TabIndex = 27;
-            this.hideClientsBtn.Text = "Hide Clients";
-            this.hideClientsBtn.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.hideClientsBtn.UseSelectable = true;
-            this.hideClientsBtn.Click += new System.EventHandler(this.hideClientsBtn_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.hideToolStripMenuItem.Text = "Toggle Show/Hide";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.hideToolStripMenuItem.Text = "Show/Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // MainPanel
@@ -680,7 +680,7 @@ namespace BotnetHost
         private MetroFramework.Controls.MetroContextMenu logContextMenu;
         private System.Windows.Forms.ToolStripMenuItem viewLogMenuItem;
         private MetroFramework.Controls.MetroContextMenu clientContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
         private MetroFramework.Controls.MetroComboBox attackTypeComboBox;
         private MetroFramework.Controls.MetroLabel metroLabel9;

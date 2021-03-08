@@ -65,7 +65,7 @@ namespace BotnetClient
             this.logListView.Location = new System.Drawing.Point(20, 30);
             this.logListView.Name = "logListView";
             this.logListView.OwnerDraw = true;
-            this.logListView.Size = new System.Drawing.Size(690, 301);
+            this.logListView.Size = new System.Drawing.Size(515, 200);
             this.logListView.Style = MetroFramework.MetroColorStyle.Blue;
             this.logListView.TabIndex = 3;
             this.logListView.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -77,13 +77,13 @@ namespace BotnetClient
             // columnHeader1
             // 
             this.columnHeader1.Text = "Log Item";
-            this.columnHeader1.Width = 670;
+            this.columnHeader1.Width = 510;
             // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 351);
+            this.ClientSize = new System.Drawing.Size(555, 250);
             this.Controls.Add(this.logListView);
             this.DisplayHeader = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

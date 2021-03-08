@@ -548,7 +548,7 @@ namespace BotnetHost
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void killToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (clientListView.SelectedItems[0] != null)
             {
