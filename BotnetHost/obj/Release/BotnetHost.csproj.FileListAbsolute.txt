@@ -4,7 +4,6 @@ C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\bin\Release\B
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\bin\Release\MetroFramework.Design.dll
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\bin\Release\MetroFramework.dll
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\bin\Release\MetroFramework.Fonts.dll
-C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\obj\Release\BotnetHost.csprojAssemblyReference.cache
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\obj\Release\BotnetHost.MainPanel.resources
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\obj\Release\BotnetHost.Properties.Resources.resources
 C:\Users\eblan\Desktop\School\Cryptography\CS376Project\BotnetHost\obj\Release\BotnetHost.csproj.GenerateResource.cache
